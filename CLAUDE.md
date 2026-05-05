@@ -62,7 +62,11 @@ src/piped/
 - [x] differ.py
 - [x] cli.py
 
-### Phase 2
+### Phase 2 ✅
 - [x] providers/gitlab.py
 - [x] providers/terraform.py
 - [x] providers/github.py
+
+### Phase 3
+- [ ] config.py — read credentials from .env or ~/.piped.toml
+- [ ] update cli.py — support --from and --to flags with real providers
