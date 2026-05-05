@@ -1,7 +1,6 @@
 """Unit tests for models.py"""
 
-import pytest
-from piped.models import Variable, DiffResult, ProviderKind
+from piped.models import DiffResult, ProviderKind, Variable
 
 
 class TestVariable:

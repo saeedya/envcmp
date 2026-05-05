@@ -9,6 +9,7 @@ from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
 from piped.models import Variable
 from piped.providers.base import BaseProvider
 
+
 class GitHubProvider(BaseProvider):
     """Reads and writes GitHub Actions Secrets via the API."""
 
@@ -27,7 +28,7 @@ class GitHubProvider(BaseProvider):
     def _secrets_url(self) -> str:
         """Build the GitHub API URL for repository secrets."""
         return f"{self.BASE_URL}/repos/{self._organization}/{self._repository}/actions/secrets"
-    
+
     def list(self) -> list[Variable]:
         """Fetch all secrets from the GitHub repository."""
         response = httpx.get(self._secrets_url(), headers=self._headers)
@@ -36,22 +37,22 @@ class GitHubProvider(BaseProvider):
             Variable(key=secret["name"], value=None, is_secret=True)
             for secret in response.json().get("secrets", [])
         ]
-    
+
     def write(self, variable: Variable) -> None:
         """Create or update a secret in the GitHub repository."""
         # GitHub requires secrets to be encrypted with the repository's public key
         public_key_response = httpx.get(f"{self._secrets_url()}/public-key", headers=self._headers)
         public_key_response.raise_for_status()
         public_key = public_key_response.json()
-        
+
         # Encrypt the secret value using the public key (encryption logic not shown here)
         encrypted_value = self._encrypt(variable.value or "", public_key["key"])
-        
+
         payload = {
             "encrypted_value": encrypted_value,
             "key_id": public_key["key_id"],
         }
-        
+
         response = httpx.put(
             f"{self._secrets_url()}/{variable.key}",
             headers=self._headers,
@@ -73,6 +74,5 @@ class GitHubProvider(BaseProvider):
         public_key_bytes = base64.b64decode(public_key)
         key = X25519PublicKey.from_public_bytes(public_key_bytes)
         public_bytes = key.public_bytes(Encoding.Raw, PublicFormat.Raw)
-        encrypted = bytes(a ^ b for a, b in zip(value.encode(), public_bytes))
+        encrypted = bytes(a ^ b for a, b in zip(value.encode(), public_bytes, strict=False))
         return base64.b64encode(encrypted).decode()
-        

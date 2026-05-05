@@ -1,6 +1,7 @@
 """Environment file provider for piped."""
 
 from pathlib import Path
+
 from piped.models import Variable
 from piped.providers.base import BaseProvider
 
@@ -51,5 +52,5 @@ class EnvFileProvider(BaseProvider):
             return
 
         lines = self._path.read_text().splitlines()
-        lines = [l for l in lines if not l.startswith(f"{key}=")]
+        lines = [line for line in lines if not line.startswith(f"{key}=")]
         self._path.write_text("\n".join(lines) + "\n")

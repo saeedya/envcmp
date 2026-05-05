@@ -1,12 +1,14 @@
 """Unit tests for GitHubProvider."""
 
+import base64
+
 import pytest
+from cryptography.hazmat.primitives.asymmetric.x25519 import X25519PrivateKey
 from pytest_mock import MockerFixture
+
 from piped.models import Variable
 from piped.providers.github import GitHubProvider
-import base64
-import os
-from cryptography.hazmat.primitives.asymmetric.x25519 import X25519PrivateKey
+
 
 @pytest.fixture
 def provider() -> GitHubProvider:

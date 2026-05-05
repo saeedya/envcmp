@@ -2,6 +2,7 @@
 
 import pytest
 from pytest_mock import MockerFixture
+
 from piped.models import Variable
 from piped.providers.gitlab import GitLabProvider
 

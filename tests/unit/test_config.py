@@ -1,8 +1,7 @@
 """Unit tests for Config loader."""
 
-import os
-import pytest
-from piped.config import load, Config, GitLabConfig, GitHubConfig, TerraformCloudConfig
+from piped.config import Config, GitHubConfig, GitLabConfig, TerraformCloudConfig, load
+
 
 class TestConfig:
     def test_load_gitlab_config(self, monkeypatch):
@@ -15,7 +14,7 @@ class TestConfig:
             token="test-token",
             project_id="123",
         )
-    
+
     def test_load_github_config(self, monkeypatch):
         monkeypatch.setenv("GITHUB_TOKEN", "test-token")
         monkeypatch.setenv("GITHUB_ORGANIZATION", "my-org")
@@ -26,7 +25,7 @@ class TestConfig:
             organization="my-org",
             repository="my-repo",
         )
-    
+
     def test_load_terraform_config(self, monkeypatch):
         monkeypatch.setenv("TERRAFORM_TOKEN", "test-token")
         monkeypatch.setenv("TERRAFORM_ORGANIZATION", "my-org")
@@ -37,7 +36,7 @@ class TestConfig:
             organization="my-org",
             workspace="my-workspace",
         )
-    
+
     def test_load_empty_config(self, monkeypatch):
         monkeypatch.delenv("GITLAB_URL", raising=False)
         monkeypatch.delenv("GITLAB_TOKEN", raising=False)
@@ -49,7 +48,7 @@ class TestConfig:
         monkeypatch.delenv("TERRAFORM_ORGANIZATION", raising=False)
         monkeypatch.delenv("TERRAFORM_WORKSPACE", raising=False)
         config = load()
-        assert config == Config()    
+        assert config == Config()
         assert config.gitlab is None
         assert config.github is None
         assert config.terraform is None

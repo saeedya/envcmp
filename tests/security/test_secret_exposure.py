@@ -1,6 +1,5 @@
 """Security tests — ensure secrets are never exposed in output."""
 
-import pytest
 from piped.models import Variable
 
 
