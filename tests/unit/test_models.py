@@ -27,6 +27,11 @@ class TestVariable:
         b = Variable(key="X", value="2")
         assert a != b
 
+    def test_repr_masks_secret_value(self):
+        var = Variable(key="DB_PASS", value="secret", is_secret=True)
+        assert "secret" not in repr(var)
+        assert "DB_PASS" in repr(var)
+
     def test_equality_ignores_is_secret_flag(self):
         a = Variable(key="X", value="1", is_secret=True)
         b = Variable(key="X", value="1", is_secret=False)

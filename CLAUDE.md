@@ -75,5 +75,6 @@ src/piped/
 - [x] update cli.py — support --from and --to flags with real providers
 
 ### Phase 4 ✅
+- [x] push command — sync variables from source to target
 - [x] security tests — secret exposure checks
-- [x] CVE scanning — pip-audit + bandit + safety
+- [x] CVE scanning — pip-audit + bandit

@@ -57,6 +57,36 @@ def diff_cmd(
     console.print(table)
     raise typer.Exit(1)
 
+@app.command()
+def push(
+    from_: str = typer.Option(..., "--from", help="Source provider (e.g. gitlab:my-project)"),
+    to: str = typer.Option(..., "--to", help="Target provider (e.g. terraform:my-workspace)"),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Show what would be pushed without applying"),
+) -> None:
+    """Push variables from source to target provider."""
+    source_provider = resolve_provider(from_)
+    target_provider = resolve_provider(to)
+
+    result = diff(source_provider, target_provider)
+
+    if result.is_clean:
+        console.print("[green]✓ Everything is already in sync.[/green]")
+        raise typer.Exit(0)
+
+    to_push = result.source_only + [src for src, _ in result.differs]
+
+    if dry_run:
+        console.print(f"[yellow]Dry run — {len(to_push)} variables would be pushed:[/yellow]")
+        for var in to_push:
+            console.print(f"  {var.key}")
+        raise typer.Exit(0)
+
+    for var in to_push:
+        target_provider.write(var)
+        console.print(f"[green]✓ pushed {var.key}[/green]")
+
+    console.print(f"\n[green]Done — {len(to_push)} variables pushed.[/green]")
+
 def resolve_provider(source: str) -> BaseProvider:
     """Parse a provider string and return the appropriate provider."""
     if ":" not in source:

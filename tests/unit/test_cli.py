@@ -4,6 +4,8 @@ import pytest
 from pathlib import Path
 from typer.testing import CliRunner
 from piped.cli import app
+from piped.providers.env_file import EnvFileProvider
+from piped.models import Variable
 
 runner = CliRunner()
 
@@ -25,6 +27,7 @@ def target_env(tmp_path: Path) -> Path:
 class TestDiffCommand:
     def test_in_sync(self, source_env: Path, target_env: Path):
         result = runner.invoke(app, [
+            "diff-cmd",
             "--from", f"env:{source_env}",
             "--to", f"env:{target_env}",
         ])
@@ -34,6 +37,7 @@ class TestDiffCommand:
     def test_differs(self, source_env: Path, target_env: Path):
         target_env.write_text("DB_HOST=remotehost\nDB_PORT=5432\n")
         result = runner.invoke(app, [
+            "diff-cmd",
             "--from", f"env:{source_env}",
             "--to", f"env:{target_env}",
         ])
@@ -43,6 +47,7 @@ class TestDiffCommand:
     def test_source_only(self, source_env: Path, target_env: Path):
         target_env.write_text("DB_HOST=localhost\n")
         result = runner.invoke(app, [
+            "diff-cmd",
             "--from", f"env:{source_env}",
             "--to", f"env:{target_env}",
         ])
@@ -52,6 +57,7 @@ class TestDiffCommand:
     def test_target_only(self, source_env: Path, target_env: Path):
         target_env.write_text("DB_HOST=localhost\nDB_PORT=5432\nEXTRA=extra\n")
         result = runner.invoke(app, [
+            "diff-cmd",
             "--from", f"env:{source_env}",
             "--to", f"env:{target_env}",
         ])
@@ -126,3 +132,39 @@ class TestResolveProvider:
         monkeypatch.setenv("TERRAFORM_WORKSPACE", "my-workspace")
         provider = resolve_provider("terraform:my-workspace")
         assert isinstance(provider, TerraformProvider)
+
+class TestPushCommand:
+    def test_push_in_sync(self, source_env: Path, target_env: Path):
+        result = runner.invoke(app, [
+            "push",
+            "--from", f"env:{source_env}",
+            "--to", f"env:{target_env}",
+        ])
+        assert result.exit_code == 0
+        assert "in sync" in result.output
+
+    def test_push_dry_run(self, source_env: Path, target_env: Path):
+        target_env.write_text("")
+        result = runner.invoke(app, [
+            "push",
+            "--from", f"env:{source_env}",
+            "--to", f"env:{target_env}",
+            "--dry-run",
+        ])
+        assert result.exit_code == 0
+        assert "Dry run" in result.output
+        assert "DB_HOST" in result.output
+
+    def test_push_applies_changes(self, source_env: Path, target_env: Path):
+        target_env.write_text("")
+        result = runner.invoke(app, [
+            "push",
+            "--from", f"env:{source_env}",
+            "--to", f"env:{target_env}",
+        ])
+        assert result.exit_code == 0
+        assert "pushed" in result.output
+        provider = EnvFileProvider(str(target_env))
+        variables = provider.list()
+        assert Variable("DB_HOST", "localhost") in variables
+        assert Variable("DB_PORT", "5432") in variables
