@@ -53,12 +53,16 @@ src/piped/
 - Write a new provider without inheriting from `BaseProvider`
 - Write integration tests without mocking external APIs
 
-## Current status (phase 1)
+## Current status
 
+### Phase 1 ✅
 - [x] models.py — Variable, DiffResult, ProviderKind
 - [x] providers/base.py
 - [x] providers/env_file.py
 - [x] differ.py
 - [x] cli.py
+
+### Phase 2
 - [ ] providers/gitlab.py
 - [ ] providers/terraform.py
+- [ ] providers/github.py
