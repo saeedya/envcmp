@@ -58,7 +58,7 @@ src/piped/
 - [x] models.py — Variable, DiffResult, ProviderKind
 - [x] providers/base.py
 - [x] providers/env_file.py
-- [ ] differ.py
+- [x] differ.py
 - [ ] cli.py
 - [ ] providers/gitlab.py
 - [ ] providers/terraform.py
