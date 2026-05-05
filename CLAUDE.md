@@ -69,4 +69,4 @@ src/piped/
 
 ### Phase 3
 - [x] config.py — read credentials from .env or ~/.piped.toml
-- [ ] update cli.py — support --from and --to flags with real providers
+- [x] update cli.py — support --from and --to flags with real providers
