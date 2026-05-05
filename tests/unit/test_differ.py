@@ -1,7 +1,7 @@
 """Unit tests for differ.py"""
 
-from piped.models import Variable
 from piped.differ import diff
+from piped.models import Variable
 from piped.providers.base import BaseProvider
 
 

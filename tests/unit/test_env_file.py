@@ -1,7 +1,9 @@
 """Unit tests for EnvFileProvider."""
 
-import pytest
 from pathlib import Path
+
+import pytest
+
 from piped.models import Variable
 from piped.providers.env_file import EnvFileProvider
 

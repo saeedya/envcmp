@@ -1,6 +1,7 @@
 """Unit tests for base provider."""
 
 import pytest
+
 from piped.models import Variable
 from piped.providers.base import BaseProvider
 

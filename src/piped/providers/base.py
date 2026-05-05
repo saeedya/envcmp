@@ -1,6 +1,7 @@
 """Base provider interface for piped."""
 
 from abc import ABC, abstractmethod
+
 from piped.models import Variable
 
 

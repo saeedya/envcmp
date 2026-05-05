@@ -1,7 +1,7 @@
 """Core data models for piped."""
 
-from enum import StrEnum
 from dataclasses import dataclass, field
+from enum import StrEnum
 
 
 class ProviderKind(StrEnum):
@@ -26,7 +26,7 @@ class Variable:
 
     def __repr__(self) -> str:
         return f"Variable(key={self.key!r}, value={self.masked_value()!r})"
-    
+
     def masked_value(self) -> str:
         """Return a safe representation of the value for display."""
         if self.value is None:

@@ -1,6 +1,6 @@
 """Diff logic between two providers."""
 
-from piped.models import Variable, DiffResult
+from piped.models import DiffResult
 from piped.providers.base import BaseProvider
 
 

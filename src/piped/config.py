@@ -2,6 +2,7 @@
 
 import os
 from dataclasses import dataclass
+
 from dotenv import load_dotenv
 
 
@@ -41,14 +42,16 @@ def load() -> Config:
             project_id=os.getenv("GITLAB_PROJECT_ID") or "",
         )
 
-    if os.getenv("GITHUB_TOKEN") and os.getenv("GITHUB_ORGANIZATION") and os.getenv("GITHUB_REPOSITORY"):
+    if os.getenv("GITHUB_TOKEN") and os.getenv("GITHUB_ORGANIZATION") and \
+        os.getenv("GITHUB_REPOSITORY"):
         config.github = GitHubConfig(
             token=os.getenv("GITHUB_TOKEN") or "",
             organization=os.getenv("GITHUB_ORGANIZATION") or "",
             repository=os.getenv("GITHUB_REPOSITORY") or "",
         )
 
-    if os.getenv("TERRAFORM_TOKEN") and os.getenv("TERRAFORM_ORGANIZATION") and os.getenv("TERRAFORM_WORKSPACE"):
+    if os.getenv("TERRAFORM_TOKEN") and os.getenv("TERRAFORM_ORGANIZATION") and \
+        os.getenv("TERRAFORM_WORKSPACE"):
         config.terraform = TerraformCloudConfig(
             token=os.getenv("TERRAFORM_TOKEN") or "",
             organization=os.getenv("TERRAFORM_ORGANIZATION") or "",

@@ -1,11 +1,13 @@
 """Unit tests for cli.py"""
 
-import pytest
 from pathlib import Path
+
+import pytest
 from typer.testing import CliRunner
+
 from piped.cli import app
-from piped.providers.env_file import EnvFileProvider
 from piped.models import Variable
+from piped.providers.env_file import EnvFileProvider
 
 runner = CliRunner()
 
@@ -81,7 +83,7 @@ class TestResolveProvider:
         from piped.cli import resolve_provider
         with pytest.raises(ValueError, match="Unsupported provider"):
             resolve_provider("unknown:something")
-    
+
     def test_resolve_gitlab_without_config(self, monkeypatch):
         from piped.cli import resolve_provider
         monkeypatch.delenv("GITLAB_TOKEN", raising=False)
@@ -105,7 +107,7 @@ class TestResolveProvider:
         monkeypatch.delenv("TERRAFORM_WORKSPACE", raising=False)
         with pytest.raises(ValueError, match="Terraform is not configured"):
             resolve_provider("terraform:my-workspace")
-    
+
     def test_resolve_gitlab_with_config(self, monkeypatch):
         from piped.cli import resolve_provider
         from piped.providers.gitlab import GitLabProvider
