@@ -170,3 +170,40 @@ class TestPushCommand:
         variables = provider.list()
         assert Variable("DB_HOST", "localhost") in variables
         assert Variable("DB_PORT", "5432") in variables
+
+
+class TestPullCommand:
+    def test_pull_in_sync(self, source_env: Path, target_env: Path):
+        result = runner.invoke(app, [
+            "pull",
+            "--from", f"env:{source_env}",
+            "--to", f"env:{target_env}",
+        ])
+        assert result.exit_code == 0
+        assert "in sync" in result.output
+
+    def test_pull_dry_run(self, source_env: Path, target_env: Path):
+        source_env.write_text("")
+        result = runner.invoke(app, [
+            "pull",
+            "--from", f"env:{source_env}",
+            "--to", f"env:{target_env}",
+            "--dry-run",
+        ])
+        assert result.exit_code == 0
+        assert "Dry run" in result.output
+        assert "DB_HOST" in result.output
+
+    def test_pull_applies_changes(self, source_env: Path, target_env: Path):
+        source_env.write_text("")
+        result = runner.invoke(app, [
+            "pull",
+            "--from", f"env:{source_env}",
+            "--to", f"env:{target_env}",
+        ])
+        assert result.exit_code == 0
+        assert "pulled" in result.output
+        provider = EnvFileProvider(str(source_env))
+        variables = provider.list()
+        assert Variable("DB_HOST", "localhost") in variables
+        assert Variable("DB_PORT", "5432") in variables
