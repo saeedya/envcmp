@@ -24,6 +24,9 @@ mypy src/
 
 # Security scan
 bandit -r src/
+
+# Audit dependencies for CVEs
+pip-audit
 ```
 
 ## Project structure
@@ -67,6 +70,6 @@ src/piped/
 - [x] providers/terraform.py
 - [x] providers/github.py
 
-### Phase 3
+### Phase 3 ✅
 - [x] config.py — read credentials from .env or ~/.piped.toml
 - [x] update cli.py — support --from and --to flags with real providers
