@@ -35,6 +35,7 @@ pre-commit run --all-files
 
 ## Project structure
 
+```text
 src/envcmp/
 ├── models.py          ← Variable, DiffResult, ProviderKind
 ├── cli.py             ← entry point — diff/push/pull commands
@@ -45,6 +46,7 @@ src/envcmp/
 ├── gitlab.py      ← GitLab CI Variables API
 ├── github.py      ← GitHub Actions Secrets API
 └── terraform.py   ← Terraform Cloud Variables API
+```
 
 ## Coding rules
 

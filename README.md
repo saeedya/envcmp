@@ -2,8 +2,9 @@
 
 ![Python](https://img.shields.io/badge/python-3.12+-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
-![Tests](https://img.shields.io/badge/tests-74%20passed-brightgreen)
+![Tests](https://img.shields.io/badge/tests-77%20passed-brightgreen)
 ![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)
+![CI](https://github.com/saeedya/envcmp/actions/workflows/ci.yml/badge.svg)
 
 A lightweight CLI tool to sync CI/CD variables and secrets between platforms.
 
@@ -116,6 +117,20 @@ pytest
 - Secret values are never printed in plain text
 - All output uses masked values (`••••••••`)
 - Dependencies scanned with `pip-audit` and `bandit`
+
+## Contributing
+
+Contributions are welcome! Here's how to get started:
+
+1. Fork the repository
+2. Create a branch: `git checkout -b feat/your-feature`
+3. Make your changes
+4. Run tests: `pytest tests/unit/ tests/security/`
+5. Run pre-commit: `pre-commit run --all-files`
+6. Commit: `git commit -m "feat: your feature"`
+7. Push and open a Pull Request
+
+See [docs/contributing.md](docs/contributing.md) for more details.
 
 ## License
 
