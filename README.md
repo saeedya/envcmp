@@ -91,6 +91,13 @@ piped push --from gitlab:my-project --to terraform:my-workspace
 
 # dry run
 piped push --from env:.env --to env:.env.staging --dry-run
+
+# pull changes from target to source
+piped pull --from env:.env.local --to gitlab:my-project
+
+# dry run
+piped pull --from env:.env.local --to gitlab:my-project --dry-run
+
 ```
 
 ## Development

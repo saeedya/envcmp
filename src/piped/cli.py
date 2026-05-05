@@ -88,6 +88,37 @@ def push(
 
     console.print(f"\n[green]Done — {len(to_push)} variables pushed.[/green]")
 
+@app.command()
+def pull(
+    from_: str = typer.Option(..., "--from", help="Source provider (e.g. gitlab:my-project)"),
+    to: str = typer.Option(..., "--to", help="Target provider (e.g. env:.env.local)"),
+    dry_run: bool = typer.Option(False, "--dry-run",
+        help="Show what would be pulled without applying"),
+) -> None:
+    """Pull variables from target to source provider."""
+    source_provider = resolve_provider(from_)
+    target_provider = resolve_provider(to)
+
+    result = diff(source_provider, target_provider)
+
+    if result.is_clean:
+        console.print("[green]✓ Everything is already in sync.[/green]")
+        raise typer.Exit(0)
+
+    to_pull = result.target_only + [tgt for _, tgt in result.differs]
+
+    if dry_run:
+        console.print(f"[yellow]Dry run — {len(to_pull)} variables would be pulled:[/yellow]")
+        for var in to_pull:
+            console.print(f"  {var.key}")
+        raise typer.Exit(0)
+
+    for var in to_pull:
+        source_provider.write(var)
+        console.print(f"[green]✓ pulled {var.key}[/green]")
+
+    console.print(f"\n[green]Done — {len(to_pull)} variables pulled.[/green]")
+
 def resolve_provider(source: str) -> BaseProvider:
     """Parse a provider string and return the appropriate provider."""
     if ":" not in source:

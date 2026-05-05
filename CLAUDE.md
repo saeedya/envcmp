@@ -76,5 +76,6 @@ src/piped/
 
 ### Phase 4 ✅
 - [x] push command — sync variables from source to target
+- [x] pull command — sync variables from target to source
 - [x] security tests — secret exposure checks
 - [x] CVE scanning — pip-audit + bandit
