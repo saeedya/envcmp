@@ -1,6 +1,6 @@
 """Unit tests for models.py"""
 
-from piped.models import DiffResult, ProviderKind, Variable
+from envcmp.models import DiffResult, ProviderKind, Variable
 
 
 class TestVariable:

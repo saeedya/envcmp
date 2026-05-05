@@ -1,4 +1,4 @@
-# piped
+# envcmp
 
 ![Python](https://img.shields.io/badge/python-3.12+-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
@@ -22,7 +22,7 @@ They should always be in sync — but no tool does this automatically.
 
 ```bash
 # see what's different
-piped diff-cmd --from gitlab:my-project --to terraform:my-workspace
+envcmp diff-cmd --from gitlab:my-project --to terraform:my-workspace
 
 # output
 KEY          SOURCE      TARGET      STATUS
@@ -34,10 +34,10 @@ STRIPE_KEY   (not set)   ••••••••    target only
 DB_PASS      ••••••••    ••••••••    differs
 
 # push changes from source to target
-piped push --from gitlab:my-project --to terraform:my-workspace
+envcmp push --from gitlab:my-project --to terraform:my-workspace
 
 # dry run — see what would be pushed
-piped push --from gitlab:my-project --to terraform:my-workspace --dry-run
+envcmp push --from gitlab:my-project --to terraform:my-workspace --dry-run
 ```
 
 ## Supported platforms
@@ -52,7 +52,7 @@ piped push --from gitlab:my-project --to terraform:my-workspace --dry-run
 ## Installation
 
 ```bash
-pip install piped
+pip install envcmp
 ```
 
 ## Configuration
@@ -81,30 +81,30 @@ TERRAFORM_WORKSPACE=my-workspace
 
 ```bash
 # diff between two providers
-piped diff-cmd --from gitlab:my-project --to terraform:my-workspace
+envcmp diff-cmd --from gitlab:my-project --to terraform:my-workspace
 
 # diff between two .env files
-piped diff-cmd --from env:.env.production --to env:.env.staging
+envcmp diff-cmd --from env:.env.production --to env:.env.staging
 
 # push changes
-piped push --from gitlab:my-project --to terraform:my-workspace
+envcmp push --from gitlab:my-project --to terraform:my-workspace
 
 # dry run
-piped push --from env:.env --to env:.env.staging --dry-run
+envcmp push --from env:.env --to env:.env.staging --dry-run
 
 # pull changes from target to source
-piped pull --from env:.env.local --to gitlab:my-project
+envcmp pull --from env:.env.local --to gitlab:my-project
 
 # dry run
-piped pull --from env:.env.local --to gitlab:my-project --dry-run
+envcmp pull --from env:.env.local --to gitlab:my-project --dry-run
 
 ```
 
 ## Development
 
 ```bash
-git clone https://github.com/your-username/piped.git
-cd piped
+git clone https://github.com/your-username/envcmp.git
+cd envcmp
 python -m venv .venv
 source .venv/bin/activate
 pip install -e ".[dev]"

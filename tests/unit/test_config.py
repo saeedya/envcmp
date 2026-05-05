@@ -1,6 +1,6 @@
 """Unit tests for Config loader."""
 
-from piped.config import Config, GitHubConfig, GitLabConfig, TerraformCloudConfig, load
+from envcmp.config import Config, GitHubConfig, GitLabConfig, TerraformCloudConfig, load
 
 
 class TestConfig:

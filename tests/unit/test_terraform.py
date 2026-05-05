@@ -3,8 +3,8 @@
 import pytest
 from pytest_mock import MockerFixture
 
-from piped.models import Variable
-from piped.providers.terraform import TerraformProvider
+from envcmp.models import Variable
+from envcmp.providers.terraform import TerraformProvider
 
 
 @pytest.fixture
@@ -45,7 +45,7 @@ class TestTerraformProvider:
         mock_variables_response: dict,
         mocker: MockerFixture,
     ):
-        mocker.patch("piped.providers.terraform.httpx.get").side_effect = [
+        mocker.patch("envcmp.providers.terraform.httpx.get").side_effect = [
             mocker.Mock(json=lambda: mock_workspace_response, raise_for_status=lambda: None),
             mocker.Mock(json=lambda: mock_variables_response, raise_for_status=lambda: None),
         ]
@@ -60,7 +60,7 @@ class TestTerraformProvider:
         mock_variables_response: dict,
         mocker: MockerFixture,
     ):
-        mocker.patch("piped.providers.terraform.httpx.get").side_effect = [
+        mocker.patch("envcmp.providers.terraform.httpx.get").side_effect = [
             mocker.Mock(json=lambda: mock_workspace_response, raise_for_status=lambda: None),
             mocker.Mock(json=lambda: mock_variables_response, raise_for_status=lambda: None),
         ]
@@ -75,11 +75,11 @@ class TestTerraformProvider:
         mock_variables_response: dict,
         mocker: MockerFixture,
     ):
-        mocker.patch("piped.providers.terraform.httpx.get").side_effect = [
+        mocker.patch("envcmp.providers.terraform.httpx.get").side_effect = [
             mocker.Mock(json=lambda: mock_workspace_response, raise_for_status=lambda: None),
             mocker.Mock(json=lambda: {"data": []}, raise_for_status=lambda: None),
         ]
-        mock_post = mocker.patch("piped.providers.terraform.httpx.post")
+        mock_post = mocker.patch("envcmp.providers.terraform.httpx.post")
         mock_post.return_value = mocker.Mock(raise_for_status=lambda: None)
         provider.write(Variable("NEW_KEY", "new_value"))
         assert mock_post.called
@@ -91,11 +91,11 @@ class TestTerraformProvider:
         mock_variables_response: dict,
         mocker: MockerFixture,
     ):
-        mocker.patch("piped.providers.terraform.httpx.get").side_effect = [
+        mocker.patch("envcmp.providers.terraform.httpx.get").side_effect = [
             mocker.Mock(json=lambda: mock_workspace_response, raise_for_status=lambda: None),
             mocker.Mock(json=lambda: mock_variables_response, raise_for_status=lambda: None),
         ]
-        mock_patch = mocker.patch("piped.providers.terraform.httpx.patch")
+        mock_patch = mocker.patch("envcmp.providers.terraform.httpx.patch")
         mock_patch.return_value = mocker.Mock(raise_for_status=lambda: None)
         provider.write(Variable("DB_HOST", "newhost"))
         assert mock_patch.called
@@ -106,10 +106,10 @@ class TestTerraformProvider:
         mock_workspace_response: dict,
         mocker: MockerFixture,
     ):
-        mocker.patch("piped.providers.terraform.httpx.get").return_value = mocker.Mock(
+        mocker.patch("envcmp.providers.terraform.httpx.get").return_value = mocker.Mock(
             json=lambda: mock_workspace_response, raise_for_status=lambda: None
         )
-        mock_delete = mocker.patch("piped.providers.terraform.httpx.delete")
+        mock_delete = mocker.patch("envcmp.providers.terraform.httpx.delete")
         mock_delete.return_value = mocker.Mock(raise_for_status=lambda: None)
         provider.delete("DB_HOST")
         assert mock_delete.called

@@ -2,8 +2,8 @@
 
 import pytest
 
-from piped.models import Variable
-from piped.providers.base import BaseProvider
+from envcmp.models import Variable
+from envcmp.providers.base import BaseProvider
 
 
 class ConcreteProvider(BaseProvider):

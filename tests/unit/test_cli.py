@@ -5,9 +5,9 @@ from pathlib import Path
 import pytest
 from typer.testing import CliRunner
 
-from piped.cli import app
-from piped.models import Variable
-from piped.providers.env_file import EnvFileProvider
+from envcmp.cli import app
+from envcmp.models import Variable
+from envcmp.providers.env_file import EnvFileProvider
 
 runner = CliRunner()
 
@@ -89,26 +89,26 @@ class TestDiffCommand:
 
 class TestResolveProvider:
     def test_resolve_env_provider(self, source_env: Path):
-        from piped.cli import resolve_provider
-        from piped.providers.env_file import EnvFileProvider
+        from envcmp.cli import resolve_provider
+        from envcmp.providers.env_file import EnvFileProvider
 
         provider = resolve_provider(f"env:{source_env}")
         assert isinstance(provider, EnvFileProvider)
 
     def test_resolve_invalid_format(self):
-        from piped.cli import resolve_provider
+        from envcmp.cli import resolve_provider
 
         with pytest.raises(ValueError, match="Invalid provider format"):
             resolve_provider("invalid")
 
     def test_resolve_unsupported_kind(self):
-        from piped.cli import resolve_provider
+        from envcmp.cli import resolve_provider
 
         with pytest.raises(ValueError, match="Unsupported provider"):
             resolve_provider("unknown:something")
 
     def test_resolve_gitlab_without_config(self, monkeypatch):
-        from piped.cli import resolve_provider
+        from envcmp.cli import resolve_provider
 
         monkeypatch.delenv("GITLAB_TOKEN", raising=False)
         monkeypatch.delenv("GITLAB_URL", raising=False)
@@ -117,7 +117,7 @@ class TestResolveProvider:
             resolve_provider("gitlab:my-project")
 
     def test_resolve_github_without_config(self, monkeypatch):
-        from piped.cli import resolve_provider
+        from envcmp.cli import resolve_provider
 
         monkeypatch.delenv("GITHUB_TOKEN", raising=False)
         monkeypatch.delenv("GITHUB_ORGANIZATION", raising=False)
@@ -126,7 +126,7 @@ class TestResolveProvider:
             resolve_provider("github:my-repo")
 
     def test_resolve_terraform_without_config(self, monkeypatch):
-        from piped.cli import resolve_provider
+        from envcmp.cli import resolve_provider
 
         monkeypatch.delenv("TERRAFORM_TOKEN", raising=False)
         monkeypatch.delenv("TERRAFORM_ORGANIZATION", raising=False)
@@ -135,8 +135,8 @@ class TestResolveProvider:
             resolve_provider("terraform:my-workspace")
 
     def test_resolve_gitlab_with_config(self, monkeypatch):
-        from piped.cli import resolve_provider
-        from piped.providers.gitlab import GitLabProvider
+        from envcmp.cli import resolve_provider
+        from envcmp.providers.gitlab import GitLabProvider
 
         monkeypatch.setenv("GITLAB_URL", "https://gitlab.com")
         monkeypatch.setenv("GITLAB_TOKEN", "test-token")
@@ -145,8 +145,8 @@ class TestResolveProvider:
         assert isinstance(provider, GitLabProvider)
 
     def test_resolve_github_with_config(self, monkeypatch):
-        from piped.cli import resolve_provider
-        from piped.providers.github import GitHubProvider
+        from envcmp.cli import resolve_provider
+        from envcmp.providers.github import GitHubProvider
 
         monkeypatch.setenv("GITHUB_TOKEN", "test-token")
         monkeypatch.setenv("GITHUB_ORGANIZATION", "my-org")
@@ -155,8 +155,8 @@ class TestResolveProvider:
         assert isinstance(provider, GitHubProvider)
 
     def test_resolve_terraform_with_config(self, monkeypatch):
-        from piped.cli import resolve_provider
-        from piped.providers.terraform import TerraformProvider
+        from envcmp.cli import resolve_provider
+        from envcmp.providers.terraform import TerraformProvider
 
         monkeypatch.setenv("TERRAFORM_TOKEN", "test-token")
         monkeypatch.setenv("TERRAFORM_ORGANIZATION", "my-org")

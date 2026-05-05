@@ -3,8 +3,8 @@
 import pytest
 from pytest_mock import MockerFixture
 
-from piped.models import Variable
-from piped.providers.gitlab import GitLabProvider
+from envcmp.models import Variable
+from envcmp.providers.gitlab import GitLabProvider
 
 
 @pytest.fixture
@@ -28,7 +28,7 @@ class TestGitLabProvider:
     def test_list_returns_variables(
         self, provider: GitLabProvider, mock_variables: list[dict], mocker: MockerFixture
     ):
-        mocker.patch("piped.providers.gitlab.httpx.get").return_value = mocker.Mock(
+        mocker.patch("envcmp.providers.gitlab.httpx.get").return_value = mocker.Mock(
             json=lambda: mock_variables,
             raise_for_status=lambda: None,
         )
@@ -39,7 +39,7 @@ class TestGitLabProvider:
     def test_list_marks_masked_as_secret(
         self, provider: GitLabProvider, mock_variables: list[dict], mocker: MockerFixture
     ):
-        mocker.patch("piped.providers.gitlab.httpx.get").return_value = mocker.Mock(
+        mocker.patch("envcmp.providers.gitlab.httpx.get").return_value = mocker.Mock(
             json=lambda: mock_variables,
             raise_for_status=lambda: None,
         )
@@ -48,11 +48,11 @@ class TestGitLabProvider:
         assert db_pass.is_secret is True
 
     def test_write_creates_new_variable(self, provider: GitLabProvider, mocker: MockerFixture):
-        mocker.patch("piped.providers.gitlab.httpx.get").return_value = mocker.Mock(
+        mocker.patch("envcmp.providers.gitlab.httpx.get").return_value = mocker.Mock(
             json=lambda: [],
             raise_for_status=lambda: None,
         )
-        mock_post = mocker.patch("piped.providers.gitlab.httpx.post")
+        mock_post = mocker.patch("envcmp.providers.gitlab.httpx.post")
         mock_post.return_value = mocker.Mock(raise_for_status=lambda: None)
         provider.write(Variable("NEW_KEY", "new_value"))
         assert mock_post.called
@@ -60,17 +60,17 @@ class TestGitLabProvider:
     def test_write_updates_existing_variable(
         self, provider: GitLabProvider, mock_variables: list[dict], mocker: MockerFixture
     ):
-        mocker.patch("piped.providers.gitlab.httpx.get").return_value = mocker.Mock(
+        mocker.patch("envcmp.providers.gitlab.httpx.get").return_value = mocker.Mock(
             json=lambda: mock_variables,
             raise_for_status=lambda: None,
         )
-        mock_put = mocker.patch("piped.providers.gitlab.httpx.put")
+        mock_put = mocker.patch("envcmp.providers.gitlab.httpx.put")
         mock_put.return_value = mocker.Mock(raise_for_status=lambda: None)
         provider.write(Variable("DB_HOST", "newhost"))
         assert mock_put.called
 
     def test_delete_variable(self, provider: GitLabProvider, mocker: MockerFixture):
-        mock_delete = mocker.patch("piped.providers.gitlab.httpx.delete")
+        mock_delete = mocker.patch("envcmp.providers.gitlab.httpx.delete")
         mock_delete.return_value = mocker.Mock(raise_for_status=lambda: None)
         provider.delete("DB_HOST")
         assert mock_delete.called

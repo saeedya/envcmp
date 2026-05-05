@@ -1,16 +1,16 @@
-"""CLI entry point for piped."""
+"""CLI entry point for envcmp."""
 
 import typer
 from rich.console import Console
 from rich.table import Table
 
-import piped.config as config
-from piped.differ import diff
-from piped.providers.base import BaseProvider
-from piped.providers.env_file import EnvFileProvider
-from piped.providers.github import GitHubProvider
-from piped.providers.gitlab import GitLabProvider
-from piped.providers.terraform import TerraformProvider
+import envcmp.config as config
+from envcmp.differ import diff
+from envcmp.providers.base import BaseProvider
+from envcmp.providers.env_file import EnvFileProvider
+from envcmp.providers.github import GitHubProvider
+from envcmp.providers.gitlab import GitLabProvider
+from envcmp.providers.terraform import TerraformProvider
 
 app = typer.Typer(help="Sync CI/CD variables between platforms.")
 console = Console()

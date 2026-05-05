@@ -4,8 +4,8 @@ from pathlib import Path
 
 import pytest
 
-from piped.models import Variable
-from piped.providers.env_file import EnvFileProvider
+from envcmp.models import Variable
+from envcmp.providers.env_file import EnvFileProvider
 
 
 @pytest.fixture

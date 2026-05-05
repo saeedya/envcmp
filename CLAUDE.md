@@ -1,4 +1,4 @@
-# piped — Claude guide
+# envcmp — Claude guide
 
 ## What is this project?
 A CLI tool to sync CI/CD variables and secrets between platforms.
@@ -35,7 +35,7 @@ pre-commit run --all-files
 
 ## Project structure
 
-src/piped/
+src/envcmp/
 ├── models.py          ← Variable, DiffResult, ProviderKind
 ├── cli.py             ← entry point — diff/push/pull commands
 ├── differ.py          ← comparison logic between two providers
@@ -75,7 +75,7 @@ src/piped/
 - [x] providers/github.py
 
 ### Phase 3 ✅
-- [x] config.py — read credentials from .env or ~/.piped.toml
+- [x] config.py — read credentials from .env or ~/.envcmp.toml
 - [x] update cli.py — support --from and --to flags with real providers
 
 ### Phase 4 ✅

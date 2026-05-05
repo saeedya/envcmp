@@ -1,6 +1,6 @@
 """Security tests — ensure secrets are never exposed in output."""
 
-from piped.models import Variable
+from envcmp.models import Variable
 
 
 class TestSecretExposure:

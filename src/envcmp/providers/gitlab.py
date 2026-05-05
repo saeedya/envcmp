@@ -1,9 +1,9 @@
-"""GitLab CI Variables provider for piped."""
+"""GitLab CI Variables provider for envcmp."""
 
 import httpx
 
-from piped.models import Variable
-from piped.providers.base import BaseProvider
+from envcmp.models import Variable
+from envcmp.providers.base import BaseProvider
 
 
 class GitLabProvider(BaseProvider):

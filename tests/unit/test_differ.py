@@ -1,8 +1,8 @@
 """Unit tests for differ.py"""
 
-from piped.differ import diff
-from piped.models import Variable
-from piped.providers.base import BaseProvider
+from envcmp.differ import diff
+from envcmp.models import Variable
+from envcmp.providers.base import BaseProvider
 
 
 class FakeProvider(BaseProvider):

@@ -1,4 +1,4 @@
-"""Core data models for piped."""
+"""Core data models for envcmp."""
 
 from dataclasses import dataclass, field
 from enum import StrEnum

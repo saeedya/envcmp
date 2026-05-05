@@ -6,8 +6,8 @@ import pytest
 from cryptography.hazmat.primitives.asymmetric.x25519 import X25519PrivateKey
 from pytest_mock import MockerFixture
 
-from piped.models import Variable
-from piped.providers.github import GitHubProvider
+from envcmp.models import Variable
+from envcmp.providers.github import GitHubProvider
 
 
 @pytest.fixture
@@ -33,7 +33,7 @@ class TestGitHubProvider:
     def test_list_returns_variables(
         self, provider: GitHubProvider, mock_secrets_response: dict, mocker: MockerFixture
     ):
-        mocker.patch("piped.providers.github.httpx.get").return_value = mocker.Mock(
+        mocker.patch("envcmp.providers.github.httpx.get").return_value = mocker.Mock(
             json=lambda: mock_secrets_response,
             raise_for_status=lambda: None,
         )
@@ -43,18 +43,18 @@ class TestGitHubProvider:
         assert Variable("DB_HOST", None, True) in variables
 
     def test_write_creates_secret(self, provider: GitHubProvider, mocker: MockerFixture):
-        mocker.patch("piped.providers.github.httpx.get").return_value = mocker.Mock(
+        mocker.patch("envcmp.providers.github.httpx.get").return_value = mocker.Mock(
             json=lambda: {"key": "abc123", "key_id": "123"},
             raise_for_status=lambda: None,
         )
         mocker.patch.object(provider, "_encrypt", return_value="encrypted-value")
-        mock_put = mocker.patch("piped.providers.github.httpx.put")
+        mock_put = mocker.patch("envcmp.providers.github.httpx.put")
         mock_put.return_value = mocker.Mock(raise_for_status=lambda: None)
         provider.write(Variable("NEW_SECRET", "new-value", True))
         assert mock_put.called
 
     def test_delete_secret(self, provider: GitHubProvider, mocker: MockerFixture):
-        mock_delete = mocker.patch("piped.providers.github.httpx.delete")
+        mock_delete = mocker.patch("envcmp.providers.github.httpx.delete")
         mock_delete.return_value = mocker.Mock(raise_for_status=lambda: None)
         provider.delete("DB_HOST")
         assert mock_delete.called

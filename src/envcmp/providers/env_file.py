@@ -1,9 +1,9 @@
-"""Environment file provider for piped."""
+"""Environment file provider for envcmp."""
 
 from pathlib import Path
 
-from piped.models import Variable
-from piped.providers.base import BaseProvider
+from envcmp.models import Variable
+from envcmp.providers.base import BaseProvider
 
 
 class EnvFileProvider(BaseProvider):

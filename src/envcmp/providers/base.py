@@ -1,8 +1,8 @@
-"""Base provider interface for piped."""
+"""Base provider interface for envcmp."""
 
 from abc import ABC, abstractmethod
 
-from piped.models import Variable
+from envcmp.models import Variable
 
 
 class BaseProvider(ABC):

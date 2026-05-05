@@ -1,7 +1,7 @@
 """Diff logic between two providers."""
 
-from piped.models import DiffResult
-from piped.providers.base import BaseProvider
+from envcmp.models import DiffResult
+from envcmp.providers.base import BaseProvider
 
 
 def diff(source: BaseProvider, target: BaseProvider) -> DiffResult:

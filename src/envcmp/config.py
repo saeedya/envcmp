@@ -1,4 +1,4 @@
-"""Configuration loader for piped."""
+"""Configuration loader for envcmp."""
 
 import os
 from dataclasses import dataclass

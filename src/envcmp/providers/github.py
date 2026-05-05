@@ -1,4 +1,4 @@
-"""GitHub Actions Secrets provider for piped."""
+"""GitHub Actions Secrets provider for envcmp."""
 
 import base64
 
@@ -6,8 +6,8 @@ import httpx
 from cryptography.hazmat.primitives.asymmetric.x25519 import X25519PublicKey
 from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
 
-from piped.models import Variable
-from piped.providers.base import BaseProvider
+from envcmp.models import Variable
+from envcmp.providers.base import BaseProvider
 
 
 class GitHubProvider(BaseProvider):
