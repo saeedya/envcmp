@@ -56,7 +56,7 @@ src/piped/
 ## Current status (phase 1)
 
 - [x] models.py — Variable, DiffResult, ProviderKind
-- [ ] providers/base.py
+- [x] providers/base.py
 - [ ] providers/env_file.py
 - [ ] differ.py
 - [ ] cli.py
