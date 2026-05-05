@@ -27,6 +27,10 @@ bandit -r src/
 
 # Audit dependencies for CVEs
 pip-audit
+
+# Run pre-commit hooks on all files
+pre-commit run --all-files
+
 ```
 
 ## Project structure

@@ -60,11 +60,7 @@ class DiffResult:
     @property
     def is_clean(self) -> bool:
         """Return True if there are no differences."""
-        return (
-            len(self.source_only) == 0
-            and len(self.target_only) == 0
-            and len(self.differs) == 0
-        )
+        return len(self.source_only) == 0 and len(self.target_only) == 0 and len(self.differs) == 0
 
     @property
     def total_issues(self) -> int:

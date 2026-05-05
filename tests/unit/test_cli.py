@@ -28,41 +28,61 @@ def target_env(tmp_path: Path) -> Path:
 
 class TestDiffCommand:
     def test_in_sync(self, source_env: Path, target_env: Path):
-        result = runner.invoke(app, [
-            "diff-cmd",
-            "--from", f"env:{source_env}",
-            "--to", f"env:{target_env}",
-        ])
+        result = runner.invoke(
+            app,
+            [
+                "diff-cmd",
+                "--from",
+                f"env:{source_env}",
+                "--to",
+                f"env:{target_env}",
+            ],
+        )
         assert result.exit_code == 0
         assert "in sync" in result.output
 
     def test_differs(self, source_env: Path, target_env: Path):
         target_env.write_text("DB_HOST=remotehost\nDB_PORT=5432\n")
-        result = runner.invoke(app, [
-            "diff-cmd",
-            "--from", f"env:{source_env}",
-            "--to", f"env:{target_env}",
-        ])
+        result = runner.invoke(
+            app,
+            [
+                "diff-cmd",
+                "--from",
+                f"env:{source_env}",
+                "--to",
+                f"env:{target_env}",
+            ],
+        )
         assert result.exit_code == 1
         assert "differs" in result.output
 
     def test_source_only(self, source_env: Path, target_env: Path):
         target_env.write_text("DB_HOST=localhost\n")
-        result = runner.invoke(app, [
-            "diff-cmd",
-            "--from", f"env:{source_env}",
-            "--to", f"env:{target_env}",
-        ])
+        result = runner.invoke(
+            app,
+            [
+                "diff-cmd",
+                "--from",
+                f"env:{source_env}",
+                "--to",
+                f"env:{target_env}",
+            ],
+        )
         assert result.exit_code == 1
         assert "source only" in result.output
 
     def test_target_only(self, source_env: Path, target_env: Path):
         target_env.write_text("DB_HOST=localhost\nDB_PORT=5432\nEXTRA=extra\n")
-        result = runner.invoke(app, [
-            "diff-cmd",
-            "--from", f"env:{source_env}",
-            "--to", f"env:{target_env}",
-        ])
+        result = runner.invoke(
+            app,
+            [
+                "diff-cmd",
+                "--from",
+                f"env:{source_env}",
+                "--to",
+                f"env:{target_env}",
+            ],
+        )
         assert result.exit_code == 1
         assert "target only" in result.output
 
@@ -71,21 +91,25 @@ class TestResolveProvider:
     def test_resolve_env_provider(self, source_env: Path):
         from piped.cli import resolve_provider
         from piped.providers.env_file import EnvFileProvider
+
         provider = resolve_provider(f"env:{source_env}")
         assert isinstance(provider, EnvFileProvider)
 
     def test_resolve_invalid_format(self):
         from piped.cli import resolve_provider
+
         with pytest.raises(ValueError, match="Invalid provider format"):
             resolve_provider("invalid")
 
     def test_resolve_unsupported_kind(self):
         from piped.cli import resolve_provider
+
         with pytest.raises(ValueError, match="Unsupported provider"):
             resolve_provider("unknown:something")
 
     def test_resolve_gitlab_without_config(self, monkeypatch):
         from piped.cli import resolve_provider
+
         monkeypatch.delenv("GITLAB_TOKEN", raising=False)
         monkeypatch.delenv("GITLAB_URL", raising=False)
         monkeypatch.delenv("GITLAB_PROJECT_ID", raising=False)
@@ -94,6 +118,7 @@ class TestResolveProvider:
 
     def test_resolve_github_without_config(self, monkeypatch):
         from piped.cli import resolve_provider
+
         monkeypatch.delenv("GITHUB_TOKEN", raising=False)
         monkeypatch.delenv("GITHUB_ORGANIZATION", raising=False)
         monkeypatch.delenv("GITHUB_REPOSITORY", raising=False)
@@ -102,6 +127,7 @@ class TestResolveProvider:
 
     def test_resolve_terraform_without_config(self, monkeypatch):
         from piped.cli import resolve_provider
+
         monkeypatch.delenv("TERRAFORM_TOKEN", raising=False)
         monkeypatch.delenv("TERRAFORM_ORGANIZATION", raising=False)
         monkeypatch.delenv("TERRAFORM_WORKSPACE", raising=False)
@@ -111,6 +137,7 @@ class TestResolveProvider:
     def test_resolve_gitlab_with_config(self, monkeypatch):
         from piped.cli import resolve_provider
         from piped.providers.gitlab import GitLabProvider
+
         monkeypatch.setenv("GITLAB_URL", "https://gitlab.com")
         monkeypatch.setenv("GITLAB_TOKEN", "test-token")
         monkeypatch.setenv("GITLAB_PROJECT_ID", "123")
@@ -120,6 +147,7 @@ class TestResolveProvider:
     def test_resolve_github_with_config(self, monkeypatch):
         from piped.cli import resolve_provider
         from piped.providers.github import GitHubProvider
+
         monkeypatch.setenv("GITHUB_TOKEN", "test-token")
         monkeypatch.setenv("GITHUB_ORGANIZATION", "my-org")
         monkeypatch.setenv("GITHUB_REPOSITORY", "my-repo")
@@ -129,41 +157,58 @@ class TestResolveProvider:
     def test_resolve_terraform_with_config(self, monkeypatch):
         from piped.cli import resolve_provider
         from piped.providers.terraform import TerraformProvider
+
         monkeypatch.setenv("TERRAFORM_TOKEN", "test-token")
         monkeypatch.setenv("TERRAFORM_ORGANIZATION", "my-org")
         monkeypatch.setenv("TERRAFORM_WORKSPACE", "my-workspace")
         provider = resolve_provider("terraform:my-workspace")
         assert isinstance(provider, TerraformProvider)
 
+
 class TestPushCommand:
     def test_push_in_sync(self, source_env: Path, target_env: Path):
-        result = runner.invoke(app, [
-            "push",
-            "--from", f"env:{source_env}",
-            "--to", f"env:{target_env}",
-        ])
+        result = runner.invoke(
+            app,
+            [
+                "push",
+                "--from",
+                f"env:{source_env}",
+                "--to",
+                f"env:{target_env}",
+            ],
+        )
         assert result.exit_code == 0
         assert "in sync" in result.output
 
     def test_push_dry_run(self, source_env: Path, target_env: Path):
         target_env.write_text("")
-        result = runner.invoke(app, [
-            "push",
-            "--from", f"env:{source_env}",
-            "--to", f"env:{target_env}",
-            "--dry-run",
-        ])
+        result = runner.invoke(
+            app,
+            [
+                "push",
+                "--from",
+                f"env:{source_env}",
+                "--to",
+                f"env:{target_env}",
+                "--dry-run",
+            ],
+        )
         assert result.exit_code == 0
         assert "Dry run" in result.output
         assert "DB_HOST" in result.output
 
     def test_push_applies_changes(self, source_env: Path, target_env: Path):
         target_env.write_text("")
-        result = runner.invoke(app, [
-            "push",
-            "--from", f"env:{source_env}",
-            "--to", f"env:{target_env}",
-        ])
+        result = runner.invoke(
+            app,
+            [
+                "push",
+                "--from",
+                f"env:{source_env}",
+                "--to",
+                f"env:{target_env}",
+            ],
+        )
         assert result.exit_code == 0
         assert "pushed" in result.output
         provider = EnvFileProvider(str(target_env))
@@ -174,33 +219,48 @@ class TestPushCommand:
 
 class TestPullCommand:
     def test_pull_in_sync(self, source_env: Path, target_env: Path):
-        result = runner.invoke(app, [
-            "pull",
-            "--from", f"env:{source_env}",
-            "--to", f"env:{target_env}",
-        ])
+        result = runner.invoke(
+            app,
+            [
+                "pull",
+                "--from",
+                f"env:{source_env}",
+                "--to",
+                f"env:{target_env}",
+            ],
+        )
         assert result.exit_code == 0
         assert "in sync" in result.output
 
     def test_pull_dry_run(self, source_env: Path, target_env: Path):
         source_env.write_text("")
-        result = runner.invoke(app, [
-            "pull",
-            "--from", f"env:{source_env}",
-            "--to", f"env:{target_env}",
-            "--dry-run",
-        ])
+        result = runner.invoke(
+            app,
+            [
+                "pull",
+                "--from",
+                f"env:{source_env}",
+                "--to",
+                f"env:{target_env}",
+                "--dry-run",
+            ],
+        )
         assert result.exit_code == 0
         assert "Dry run" in result.output
         assert "DB_HOST" in result.output
 
     def test_pull_applies_changes(self, source_env: Path, target_env: Path):
         source_env.write_text("")
-        result = runner.invoke(app, [
-            "pull",
-            "--from", f"env:{source_env}",
-            "--to", f"env:{target_env}",
-        ])
+        result = runner.invoke(
+            app,
+            [
+                "pull",
+                "--from",
+                f"env:{source_env}",
+                "--to",
+                f"env:{target_env}",
+            ],
+        )
         assert result.exit_code == 0
         assert "pulled" in result.output
         provider = EnvFileProvider(str(source_env))

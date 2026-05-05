@@ -57,12 +57,14 @@ def diff_cmd(
     console.print(table)
     raise typer.Exit(1)
 
+
 @app.command()
 def push(
     from_: str = typer.Option(..., "--from", help="Source provider (e.g. gitlab:my-project)"),
     to: str = typer.Option(..., "--to", help="Target provider (e.g. terraform:my-workspace)"),
-    dry_run: bool = typer.Option(False, "--dry-run",
-        help="Show what would be pushed without applying"),
+    dry_run: bool = typer.Option(
+        False, "--dry-run", help="Show what would be pushed without applying"
+    ),
 ) -> None:
     """Push variables from source to target provider."""
     source_provider = resolve_provider(from_)
@@ -88,12 +90,14 @@ def push(
 
     console.print(f"\n[green]Done — {len(to_push)} variables pushed.[/green]")
 
+
 @app.command()
 def pull(
     from_: str = typer.Option(..., "--from", help="Source provider (e.g. gitlab:my-project)"),
     to: str = typer.Option(..., "--to", help="Target provider (e.g. env:.env.local)"),
-    dry_run: bool = typer.Option(False, "--dry-run",
-        help="Show what would be pulled without applying"),
+    dry_run: bool = typer.Option(
+        False, "--dry-run", help="Show what would be pulled without applying"
+    ),
 ) -> None:
     """Pull variables from target to source provider."""
     source_provider = resolve_provider(from_)
@@ -119,6 +123,7 @@ def pull(
 
     console.print(f"\n[green]Done — {len(to_pull)} variables pulled.[/green]")
 
+
 def resolve_provider(source: str) -> BaseProvider:
     """Parse a provider string and return the appropriate provider."""
     if ":" not in source:
@@ -132,23 +137,29 @@ def resolve_provider(source: str) -> BaseProvider:
 
     if kind == "gitlab":
         if cfg.gitlab is None:
-            raise ValueError("GitLab is not configured. Set GITLAB_URL, " \
-            "GITLAB_TOKEN, GITLAB_PROJECT_ID.")
-        return GitLabProvider(url=cfg.gitlab.url,
-            token=cfg.gitlab.token, project_id=identifier)
+            raise ValueError(
+                "GitLab is not configured. Set GITLAB_URL, " "GITLAB_TOKEN, GITLAB_PROJECT_ID."
+            )
+        return GitLabProvider(url=cfg.gitlab.url, token=cfg.gitlab.token, project_id=identifier)
 
     if kind == "github":
         if cfg.github is None:
-            raise ValueError("GitHub is not configured. Set GITHUB_TOKEN, " \
-            "GITHUB_ORGANIZATION, GITHUB_REPOSITORY.")
-        return GitHubProvider(token=cfg.github.token,
-            organization=cfg.github.organization, repository=identifier)
+            raise ValueError(
+                "GitHub is not configured. Set GITHUB_TOKEN, "
+                "GITHUB_ORGANIZATION, GITHUB_REPOSITORY."
+            )
+        return GitHubProvider(
+            token=cfg.github.token, organization=cfg.github.organization, repository=identifier
+        )
 
     if kind == "terraform":
         if cfg.terraform is None:
-            raise ValueError("Terraform is not configured. Set TERRAFORM_TOKEN, " \
-            "TERRAFORM_ORGANIZATION, TERRAFORM_WORKSPACE.")
-        return TerraformProvider(token=cfg.terraform.token,
-            organization=cfg.terraform.organization, workspace=identifier)
+            raise ValueError(
+                "Terraform is not configured. Set TERRAFORM_TOKEN, "
+                "TERRAFORM_ORGANIZATION, TERRAFORM_WORKSPACE."
+            )
+        return TerraformProvider(
+            token=cfg.terraform.token, organization=cfg.terraform.organization, workspace=identifier
+        )
 
     raise ValueError(f"Unsupported provider: {kind}")
