@@ -63,6 +63,6 @@ src/piped/
 - [x] cli.py
 
 ### Phase 2
-- [ ] providers/gitlab.py
+- [x] providers/gitlab.py
 - [ ] providers/terraform.py
 - [ ] providers/github.py
