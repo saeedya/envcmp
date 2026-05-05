@@ -68,5 +68,5 @@ src/piped/
 - [x] providers/github.py
 
 ### Phase 3
-- [ ] config.py — read credentials from .env or ~/.piped.toml
+- [x] config.py — read credentials from .env or ~/.piped.toml
 - [ ] update cli.py — support --from and --to flags with real providers
