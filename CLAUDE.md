@@ -59,6 +59,6 @@ src/piped/
 - [x] providers/base.py
 - [x] providers/env_file.py
 - [x] differ.py
-- [ ] cli.py
+- [x] cli.py
 - [ ] providers/gitlab.py
 - [ ] providers/terraform.py
