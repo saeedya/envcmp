@@ -24,6 +24,9 @@ class Variable:
     value: str | None = None
     is_secret: bool = False  # should the value be masked in output?
 
+    def __repr__(self) -> str:
+        return f"Variable(key={self.key!r}, value={self.masked_value()!r})"
+    
     def masked_value(self) -> str:
         """Return a safe representation of the value for display."""
         if self.value is None:

@@ -73,3 +73,7 @@ src/piped/
 ### Phase 3 ✅
 - [x] config.py — read credentials from .env or ~/.piped.toml
 - [x] update cli.py — support --from and --to flags with real providers
+
+### Phase 4 ✅
+- [x] security tests — secret exposure checks
+- [x] CVE scanning — pip-audit + bandit + safety
