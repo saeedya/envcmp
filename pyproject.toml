@@ -69,5 +69,5 @@ disallow_untyped_defs = true
 plugins = ["pydantic.mypy"]
 
 [[tool.mypy.overrides]]
-module = ["hvac.*", "apscheduler.*", "kubernetes.*", "cryptography.*"]
+module = ["hvac.*", "apscheduler.*", "kubernetes.*", "cryptography.*", "dotenv.*"]
 ignore_missing_imports = true

@@ -47,9 +47,7 @@ class TestGitLabProvider:
         db_pass = next(v for v in variables if v.key == "DB_PASS")
         assert db_pass.is_secret is True
 
-    def test_write_creates_new_variable(
-        self, provider: GitLabProvider, mocker: MockerFixture
-    ):
+    def test_write_creates_new_variable(self, provider: GitLabProvider, mocker: MockerFixture):
         mocker.patch("piped.providers.gitlab.httpx.get").return_value = mocker.Mock(
             json=lambda: [],
             raise_for_status=lambda: None,
@@ -71,9 +69,7 @@ class TestGitLabProvider:
         provider.write(Variable("DB_HOST", "newhost"))
         assert mock_put.called
 
-    def test_delete_variable(
-        self, provider: GitLabProvider, mocker: MockerFixture
-    ):
+    def test_delete_variable(self, provider: GitLabProvider, mocker: MockerFixture):
         mock_delete = mocker.patch("piped.providers.gitlab.httpx.delete")
         mock_delete.return_value = mocker.Mock(raise_for_status=lambda: None)
         provider.delete("DB_HOST")

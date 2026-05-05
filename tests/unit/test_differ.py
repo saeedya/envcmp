@@ -52,16 +52,20 @@ class TestDiff:
         assert result.differs[0][1].value == "new"
 
     def test_mixed(self):
-        source = FakeProvider([
-            Variable("A", "1"),
-            Variable("B", "2"),
-            Variable("C", "3"),
-        ])
-        target = FakeProvider([
-            Variable("A", "1"),
-            Variable("B", "changed"),
-            Variable("D", "4"),
-        ])
+        source = FakeProvider(
+            [
+                Variable("A", "1"),
+                Variable("B", "2"),
+                Variable("C", "3"),
+            ]
+        )
+        target = FakeProvider(
+            [
+                Variable("A", "1"),
+                Variable("B", "changed"),
+                Variable("D", "4"),
+            ]
+        )
         result = diff(source, target)
         assert len(result.in_sync) == 1
         assert len(result.differs) == 1
