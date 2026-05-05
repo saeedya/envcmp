@@ -65,4 +65,4 @@ src/piped/
 ### Phase 2
 - [x] providers/gitlab.py
 - [x] providers/terraform.py
-- [ ] providers/github.py
+- [x] providers/github.py
