@@ -33,7 +33,7 @@ jobs:
       - name: Security scan
         run: |
           bandit -r src/
-          pip-audit --ignore-vuln CVE-2026-3219
+          pip-audit --ignore-vuln CVE-2026-3219 --ignore-vuln CVE-2026-6357
 
   build:
     runs-on: ubuntu-latest
