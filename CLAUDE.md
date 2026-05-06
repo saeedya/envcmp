@@ -85,7 +85,7 @@ src/envcmp/
 - [x] Landing page — envcmp.dev
 
 ### Phase 4 — Next
-- [ ] --filter flag
+- [x] --filter flag
 - [ ] TUI — envcmp ui
 - [ ] HashiCorp Vault provider
 - [ ] AWS Secrets Manager provider

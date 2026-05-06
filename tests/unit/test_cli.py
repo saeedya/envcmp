@@ -267,3 +267,58 @@ class TestPullCommand:
         variables = provider.list()
         assert Variable("DB_HOST", "localhost") in variables
         assert Variable("DB_PORT", "5432") in variables
+
+
+class TestFilterFlag:
+    def test_diff_with_filter(self, source_env: Path, target_env: Path):
+        target_env.write_text("DB_HOST=localhost\n")
+        result = runner.invoke(
+            app,
+            [
+                "diff",
+                "--from",
+                f"env:{source_env}",
+                "--to",
+                f"env:{target_env}",
+                "--filter",
+                "DB_*",
+            ],
+        )
+        assert "DB_HOST" in result.output
+        assert "DB_PORT" in result.output
+
+    def test_push_with_filter(self, source_env: Path, target_env: Path):
+        target_env.write_text("")
+        result = runner.invoke(
+            app,
+            [
+                "push",
+                "--from",
+                f"env:{source_env}",
+                "--to",
+                f"env:{target_env}",
+                "--filter",
+                "DB_HOST",
+                "--dry-run",
+            ],
+        )
+        assert result.exit_code == 0
+        assert "DB_HOST" in result.output
+
+    def test_pull_with_filter(self, source_env: Path, target_env: Path):
+        source_env.write_text("")
+        result = runner.invoke(
+            app,
+            [
+                "pull",
+                "--from",
+                f"env:{source_env}",
+                "--to",
+                f"env:{target_env}",
+                "--filter",
+                "DB_HOST",
+                "--dry-run",
+            ],
+        )
+        assert result.exit_code == 0
+        assert "DB_HOST" in result.output
