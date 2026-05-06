@@ -164,6 +164,25 @@ class TestResolveProvider:
         provider = resolve_provider("terraform:my-workspace")
         assert isinstance(provider, TerraformProvider)
 
+    def test_resolve_vault_without_config(self, monkeypatch):
+        from envcmp.cli import resolve_provider
+
+        monkeypatch.delenv("VAULT_ADDR", raising=False)
+        monkeypatch.delenv("VAULT_TOKEN", raising=False)
+        monkeypatch.delenv("VAULT_PATH", raising=False)
+        with pytest.raises(ValueError, match="Vault is not configured"):
+            resolve_provider("vault:secret/data/my-app")
+
+    def test_resolve_vault_with_config(self, monkeypatch):
+        from envcmp.cli import resolve_provider
+        from envcmp.providers.vault import VaultProvider
+
+        monkeypatch.setenv("VAULT_ADDR", "http://localhost:8200")
+        monkeypatch.setenv("VAULT_TOKEN", "root")
+        monkeypatch.setenv("VAULT_PATH", "secret/data/my-app")
+        provider = resolve_provider("vault:secret/data/my-app")
+        assert isinstance(provider, VaultProvider)
+
 
 class TestPushCommand:
     def test_push_in_sync(self, source_env: Path, target_env: Path):
@@ -267,3 +286,58 @@ class TestPullCommand:
         variables = provider.list()
         assert Variable("DB_HOST", "localhost") in variables
         assert Variable("DB_PORT", "5432") in variables
+
+
+class TestFilterFlag:
+    def test_diff_with_filter(self, source_env: Path, target_env: Path):
+        target_env.write_text("DB_HOST=localhost\n")
+        result = runner.invoke(
+            app,
+            [
+                "diff",
+                "--from",
+                f"env:{source_env}",
+                "--to",
+                f"env:{target_env}",
+                "--filter",
+                "DB_*",
+            ],
+        )
+        assert "DB_HOST" in result.output
+        assert "DB_PORT" in result.output
+
+    def test_push_with_filter(self, source_env: Path, target_env: Path):
+        target_env.write_text("")
+        result = runner.invoke(
+            app,
+            [
+                "push",
+                "--from",
+                f"env:{source_env}",
+                "--to",
+                f"env:{target_env}",
+                "--filter",
+                "DB_HOST",
+                "--dry-run",
+            ],
+        )
+        assert result.exit_code == 0
+        assert "DB_HOST" in result.output
+
+    def test_pull_with_filter(self, source_env: Path, target_env: Path):
+        source_env.write_text("")
+        result = runner.invoke(
+            app,
+            [
+                "pull",
+                "--from",
+                f"env:{source_env}",
+                "--to",
+                f"env:{target_env}",
+                "--filter",
+                "DB_HOST",
+                "--dry-run",
+            ],
+        )
+        assert result.exit_code == 0
+        assert "DB_HOST" in result.output

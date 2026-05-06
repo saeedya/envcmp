@@ -11,6 +11,8 @@ from envcmp.providers.env_file import EnvFileProvider
 from envcmp.providers.github import GitHubProvider
 from envcmp.providers.gitlab import GitLabProvider
 from envcmp.providers.terraform import TerraformProvider
+from envcmp.providers.vault import VaultProvider
+from envcmp.utils import filter_variables
 
 app = typer.Typer(help="Sync CI/CD variables between platforms.")
 console = Console()
@@ -20,12 +22,19 @@ console = Console()
 def diff_cmd(
     from_: str = typer.Option(..., "--from", help="Source provider (e.g. gitlab:my-project)"),
     to: str = typer.Option(..., "--to", help="Target provider (e.g. terraform:my-workspace)"),
+    filter_: str | None = typer.Option(None, "--filter", help="Filter keys by pattern e.g. 'DB_*'"),
 ) -> None:
     """Show differences between two providers."""
     source_provider = resolve_provider(from_)
     target_provider = resolve_provider(to)
 
     result = diff(source_provider, target_provider)
+
+    if filter_:
+        result.in_sync = filter_variables(result.in_sync, filter_)
+        result.source_only = filter_variables(result.source_only, filter_)
+        result.target_only = filter_variables(result.target_only, filter_)
+        result.differs = [(s, t) for s, t in result.differs if filter_variables([s], filter_)]
 
     if result.is_clean:
         console.print("[green]✓ Everything is in sync.[/green]")
@@ -65,12 +74,17 @@ def push(
     dry_run: bool = typer.Option(
         False, "--dry-run", help="Show what would be pushed without applying"
     ),
+    filter_: str | None = typer.Option(None, "--filter", help="Filter keys by pattern e.g. 'DB_*'"),
 ) -> None:
     """Push variables from source to target provider."""
     source_provider = resolve_provider(from_)
     target_provider = resolve_provider(to)
 
     result = diff(source_provider, target_provider)
+
+    if filter_:
+        result.source_only = filter_variables(result.source_only, filter_)
+        result.differs = [(s, t) for s, t in result.differs if filter_variables([s], filter_)]
 
     if result.is_clean:
         console.print("[green]✓ Everything is already in sync.[/green]")
@@ -98,12 +112,17 @@ def pull(
     dry_run: bool = typer.Option(
         False, "--dry-run", help="Show what would be pulled without applying"
     ),
+    filter_: str | None = typer.Option(None, "--filter", help="Filter keys by pattern e.g. 'DB_*'"),
 ) -> None:
     """Pull variables from target to source provider."""
     source_provider = resolve_provider(from_)
     target_provider = resolve_provider(to)
 
     result = diff(source_provider, target_provider)
+
+    if filter_:
+        result.target_only = filter_variables(result.target_only, filter_)
+        result.differs = [(s, t) for s, t in result.differs if filter_variables([t], filter_)]
 
     if result.is_clean:
         console.print("[green]✓ Everything is already in sync.[/green]")
@@ -138,7 +157,7 @@ def resolve_provider(source: str) -> BaseProvider:
     if kind == "gitlab":
         if cfg.gitlab is None:
             raise ValueError(
-                "GitLab is not configured. Set GITLAB_URL, " "GITLAB_TOKEN, GITLAB_PROJECT_ID."
+                "GitLab is not configured. Set GITLAB_URL, GITLAB_TOKEN, GITLAB_PROJECT_ID."
             )
         return GitLabProvider(url=cfg.gitlab.url, token=cfg.gitlab.token, project_id=identifier)
 
@@ -149,17 +168,30 @@ def resolve_provider(source: str) -> BaseProvider:
                 "GITHUB_ORGANIZATION, GITHUB_REPOSITORY."
             )
         return GitHubProvider(
-            token=cfg.github.token, organization=cfg.github.organization, repository=identifier
+            token=cfg.github.token,
+            organization=cfg.github.organization,
+            repository=identifier,
         )
 
     if kind == "terraform":
         if cfg.terraform is None:
             raise ValueError(
-                "Terraform is not configured. Set TERRAFORM_TOKEN, "
-                "TERRAFORM_ORGANIZATION, TERRAFORM_WORKSPACE."
+                "Terraform is not configured. "
+                "Set TERRAFORM_TOKEN, TERRAFORM_ORGANIZATION, TERRAFORM_WORKSPACE."
             )
         return TerraformProvider(
-            token=cfg.terraform.token, organization=cfg.terraform.organization, workspace=identifier
+            token=cfg.terraform.token,
+            organization=cfg.terraform.organization,
+            workspace=identifier,
+        )
+
+    if kind == "vault":
+        if cfg.vault is None:
+            raise ValueError("Vault is not configured. Set VAULT_ADDR, VAULT_TOKEN, VAULT_PATH.")
+        return VaultProvider(
+            addr=cfg.vault.addr,
+            token=cfg.vault.token,
+            path=identifier,
         )
 
     raise ValueError(f"Unsupported provider: {kind}")

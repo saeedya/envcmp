@@ -28,10 +28,18 @@ class TerraformCloudConfig:
 
 
 @dataclass
+class VaultConfig:
+    addr: str
+    token: str
+    path: str
+
+
+@dataclass
 class Config:
     gitlab: GitLabConfig | None = None
     github: GitHubConfig | None = None
     terraform: TerraformCloudConfig | None = None
+    vault: VaultConfig | None = None
 
 
 def load() -> Config:
@@ -66,6 +74,13 @@ def load() -> Config:
             token=os.getenv("TERRAFORM_TOKEN") or "",
             organization=os.getenv("TERRAFORM_ORGANIZATION") or "",
             workspace=os.getenv("TERRAFORM_WORKSPACE") or "",
+        )
+
+    if os.getenv("VAULT_ADDR") and os.getenv("VAULT_TOKEN") and os.getenv("VAULT_PATH"):
+        config.vault = VaultConfig(
+            addr=os.getenv("VAULT_ADDR") or "",
+            token=os.getenv("VAULT_TOKEN") or "",
+            path=os.getenv("VAULT_PATH") or "",
         )
 
     return config
