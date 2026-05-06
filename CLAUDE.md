@@ -11,9 +11,9 @@ Example: GitLab CI → Terraform Cloud, or GitHub Actions → .env file
 pip install -e ".[dev]"
 
 # Run all tests
-pytest
+pytest tests/unit/ tests/security/
 
-# Unit tests only (fast, no external API calls)
+# Unit tests only
 pytest tests/unit/
 
 # Lint
@@ -25,12 +25,11 @@ mypy src/
 # Security scan
 bandit -r src/
 
-# Audit dependencies for CVEs
+# Audit dependencies
 pip-audit
 
-# Run pre-commit hooks on all files
+# Run pre-commit hooks
 pre-commit run --all-files
-
 ```
 
 ## Project structure
@@ -38,10 +37,11 @@ pre-commit run --all-files
 ```text
 src/envcmp/
 ├── models.py          ← Variable, DiffResult, ProviderKind
-├── cli.py             ← entry point — diff/push/pull commands
+├── cli.py             ← diff, push, pull commands
 ├── differ.py          ← comparison logic between two providers
+├── config.py          ← read credentials from .env
 └── providers/
-├── base.py        ← abstract class — all providers inherit from this
+├── base.py        ← abstract class
 ├── env_file.py    ← read/write .env files
 ├── gitlab.py      ← GitLab CI Variables API
 ├── github.py      ← GitHub Actions Secrets API
@@ -58,30 +58,35 @@ src/envcmp/
 ## Do not
 
 - Print real secret values anywhere
-- Add new dependencies without a good reason — keep this tool lightweight
+- Add new dependencies without a good reason
 - Write a new provider without inheriting from `BaseProvider`
 - Write integration tests without mocking external APIs
 
 ## Current status
 
 ### Phase 1 ✅
-- [x] models.py — Variable, DiffResult, ProviderKind
+- [x] models.py
 - [x] providers/base.py
 - [x] providers/env_file.py
 - [x] differ.py
-- [x] cli.py
+- [x] cli.py — diff, push, pull commands
 
 ### Phase 2 ✅
 - [x] providers/gitlab.py
 - [x] providers/terraform.py
 - [x] providers/github.py
+- [x] config.py
 
 ### Phase 3 ✅
-- [x] config.py — read credentials from .env or ~/.envcmp.toml
-- [x] update cli.py — support --from and --to flags with real providers
+- [x] security tests
+- [x] pre-commit hooks
+- [x] GitHub Actions CI
+- [x] PyPI publish — pip install envcmp
+- [x] Landing page — envcmp.dev
 
-### Phase 4 ✅
-- [x] push command — sync variables from source to target
-- [x] pull command — sync variables from target to source
-- [x] security tests — secret exposure checks
-- [x] CVE scanning — pip-audit + bandit
+### Phase 4 — Next
+- [ ] --filter flag
+- [ ] TUI — envcmp ui
+- [ ] HashiCorp Vault provider
+- [ ] AWS Secrets Manager provider
+- [ ] Pulumi ESC provider

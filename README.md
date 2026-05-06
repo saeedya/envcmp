@@ -37,12 +37,24 @@ DB_PASS      ••••••••    ••••••••    differs
 
 ## Supported platforms
 
-| Platform | Read | Write | Status |
-|---|---|---|---|
-| `.env` files | ✅ | ✅ | available |
-| GitLab CI Variables | ✅ | ✅ | available |
-| Terraform Cloud | ✅ | ✅ | available |
-| GitHub Actions | ✅ | ✅ | beta — write requires repo admin |
+| Platform | Category | Read | Write | Status |
+|---|---|---|---|---|
+| `.env` files | Local | ✅ | ✅ | available |
+| GitLab CI Variables | CI/CD | ✅ | ✅ | available |
+| Terraform Cloud | IaC | ✅ | ✅ | available |
+| GitHub Actions | CI/CD | ✅ | ⚠️ | available |
+| HashiCorp Vault | Secret Store | 🔜 | 🔜 | coming soon |
+| AWS Secrets Manager | Secret Store | 🔜 | 🔜 | coming soon |
+| Azure Key Vault | Secret Store | 🔜 | 🔜 | coming soon |
+| GCP Secret Manager | Secret Store | 🔜 | 🔜 | coming soon |
+| Pulumi ESC | IaC | 🔜 | 🔜 | coming soon |
+| Jenkins | CI/CD | 🔜 | 🔜 | coming soon |
+| CircleCI | CI/CD | 🔜 | 🔜 | coming soon |
+| Azure DevOps | CI/CD | 🔜 | 🔜 | coming soon |
+| Kubernetes Secrets | Container | 🔜 | 🔜 | coming soon |
+| Vercel | Deploy | 🔜 | 🔜 | coming soon |
+| Railway | Deploy | 🔜 | 🔜 | coming soon |
+| Fly.io | Deploy | 🔜 | 🔜 | coming soon |
 
 ## Installation
 
