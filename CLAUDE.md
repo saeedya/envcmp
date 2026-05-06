@@ -64,6 +64,13 @@ src/envcmp/
 - Write a new provider without inheriting from `BaseProvider`
 - Write integration tests without mocking external APIs
 
+## Run integration tests (requires Docker)
+```
+docker-compose -f docker-compose.test.yml up -d
+pytest tests/integration/ -v -m integration
+docker-compose -f docker-compose.test.yml down
+```
+
 ## Current status
 
 ### Phase 1 ✅
@@ -94,4 +101,4 @@ src/envcmp/
 ### Phase 5 — In Progress
 - [ ] AWS Secrets Manager provider
 - [ ] Pulumi ESC provider
-- [ ] docker-compose.test.yml + integration tests
+- [x] docker-compose.test.yml + integration tests

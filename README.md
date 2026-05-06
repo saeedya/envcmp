@@ -2,7 +2,7 @@
 
 ![Python](https://img.shields.io/badge/python-3.12+-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
-![Tests](https://img.shields.io/badge/tests-77%20passed-brightgreen)
+![Tests](https://img.shields.io/badge/tests-103%20passed-brightgreen)
 ![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)
 ![CI](https://github.com/saeedya/envcmp/actions/workflows/ci.yml/badge.svg)
 
@@ -116,6 +116,21 @@ python -m venv .venv
 source .venv/bin/activate
 pip install -e ".[dev]"
 pytest
+```
+
+## Integration Tests
+
+Requires Docker:
+
+```bash
+# start services
+docker-compose -f docker-compose.test.yml up -d
+
+# run integration tests
+pytest tests/integration/ -v -m integration
+
+# stop services
+docker-compose -f docker-compose.test.yml down
 ```
 
 ## Security
