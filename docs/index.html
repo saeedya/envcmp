@@ -27,7 +27,6 @@
     cursor: default;
   }
 
-  /* CRT scanlines */
   body::before {
     content: '';
     position: fixed;
@@ -44,13 +43,11 @@
     z-index: 9999;
   }
 
-  /* CRT flicker */
   @keyframes flicker {
     0%,100%{opacity:1} 92%{opacity:1} 93%{opacity:0.97} 94%{opacity:1} 96%{opacity:0.99}
   }
   body { animation: flicker 8s infinite; }
 
-  /* Phosphor glow */
   .glow { text-shadow: 0 0 8px var(--green), 0 0 20px var(--green-dim); }
   .glow-amber { text-shadow: 0 0 8px var(--amber), 0 0 20px #ff8800; }
 
@@ -80,7 +77,6 @@
   }
   nav a:hover { color: var(--green); text-shadow: 0 0 6px var(--green); }
 
-  /* Hero */
   .hero {
     max-width: 960px;
     margin: 80px auto 0;
@@ -144,7 +140,6 @@
     letter-spacing: 1px;
   }
 
-  /* Terminal demo */
   .terminal {
     background: #050f05;
     border: 1px solid var(--green-dim);
@@ -178,7 +173,6 @@
   @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
   .cursor { display: inline-block; width: 8px; height: 14px; background: var(--green); animation: blink 1s infinite; vertical-align: middle; margin-left: 2px; }
 
-  /* Features */
   .features {
     max-width: 960px;
     margin: 100px auto 0;
@@ -215,7 +209,6 @@
   .feature h3 { font-size: 14px; color: var(--green); margin-bottom: 8px; letter-spacing: 1px; }
   .feature p { font-size: 12px; color: var(--green-dim); line-height: 1.7; }
 
-  /* Providers */
   .providers {
     max-width: 960px;
     margin: 80px auto 0;
@@ -237,10 +230,11 @@
     color: var(--green-dim);
   }
   .providers-table tr:hover td { background: #0d1a0d; color: var(--green); }
-  .status-ok { color: #00ff41; }
+  .status-ok   { color: #00ff41; }
   .status-soon { color: var(--amber); }
+  .status-warn { color: var(--amber); }
+  .cat { font-size: 11px; color: #005020; letter-spacing: 1px; }
 
-  /* CTA */
   .cta {
     max-width: 960px;
     margin: 100px auto 0;
@@ -308,6 +302,8 @@
     .hero { grid-template-columns: 1fr; }
     .features-grid { grid-template-columns: 1fr; }
     .hero-text h1 { font-size: 48px; }
+    header { padding: 16px 20px; }
+    .hero, .features, .providers, .cta { padding: 0 20px; }
   }
 </style>
 </head>
@@ -330,13 +326,11 @@
       between GitLab CI, Terraform Cloud, GitHub Actions, and .env files.<br>
       No server. No signup. Just install and run.
     </p>
-
     <div class="install-box">
       <span class="prompt">$</span>
       <span class="cmd">pip install envcmp</span>
       <button class="copy-btn" onclick="navigator.clipboard.writeText('pip install envcmp');this.textContent='COPIED';setTimeout(()=>this.textContent='COPY',1500)">COPY</button>
     </div>
-
     <div class="badges">
       <span class="badge">Python 3.12+</span>
       <span class="badge">MIT License</span>
@@ -352,8 +346,7 @@
       <div class="t-dot"></div>
       <span class="t-title">envcmp — terminal</span>
     </div>
-    <div class="terminal-body" id="demo">
-    </div>
+    <div class="terminal-body" id="demo"></div>
   </div>
 </section>
 
@@ -399,19 +392,29 @@
     <thead>
       <tr>
         <th>PLATFORM</th>
+        <th>CATEGORY</th>
         <th>READ</th>
         <th>WRITE</th>
         <th>STATUS</th>
       </tr>
     </thead>
     <tbody>
-      <tr><td>.env files</td><td class="status-ok">✓</td><td class="status-ok">✓</td><td class="status-ok">available</td></tr>
-      <tr><td>GitLab CI Variables</td><td class="status-ok">✓</td><td class="status-ok">✓</td><td class="status-ok">available</td></tr>
-      <tr><td>Terraform Cloud</td><td class="status-ok">✓</td><td class="status-ok">✓</td><td class="status-ok">available</td></tr>
-      <tr><td>GitHub Actions</td><td class="status-ok">✓</td><td class="status-ok">✓</td><td class="status-ok">available</td></tr>
-      <tr><td>AWS Secrets Manager</td><td class="status-soon">○</td><td class="status-soon">○</td><td class="status-soon">coming soon</td></tr>
-      <tr><td>Kubernetes Secrets</td><td class="status-soon">○</td><td class="status-soon">○</td><td class="status-soon">coming soon</td></tr>
-      <tr><td>Vercel</td><td class="status-soon">○</td><td class="status-soon">○</td><td class="status-soon">coming soon</td></tr>
+      <tr><td>.env files</td><td class="cat">LOCAL</td><td class="status-ok">✓</td><td class="status-ok">✓</td><td class="status-ok">available</td></tr>
+      <tr><td>GitLab CI Variables</td><td class="cat">CI/CD</td><td class="status-ok">✓</td><td class="status-ok">✓</td><td class="status-ok">available</td></tr>
+      <tr><td>Terraform Cloud</td><td class="cat">IAC</td><td class="status-ok">✓</td><td class="status-ok">✓</td><td class="status-ok">available</td></tr>
+      <tr><td>GitHub Actions</td><td class="cat">CI/CD</td><td class="status-ok">✓</td><td class="status-warn">⚠</td><td class="status-ok">available</td></tr>
+      <tr><td>HashiCorp Vault</td><td class="cat">SECRET STORE</td><td class="status-soon">○</td><td class="status-soon">○</td><td class="status-soon">coming soon</td></tr>
+      <tr><td>AWS Secrets Manager</td><td class="cat">SECRET STORE</td><td class="status-soon">○</td><td class="status-soon">○</td><td class="status-soon">coming soon</td></tr>
+      <tr><td>Azure Key Vault</td><td class="cat">SECRET STORE</td><td class="status-soon">○</td><td class="status-soon">○</td><td class="status-soon">coming soon</td></tr>
+      <tr><td>GCP Secret Manager</td><td class="cat">SECRET STORE</td><td class="status-soon">○</td><td class="status-soon">○</td><td class="status-soon">coming soon</td></tr>
+      <tr><td>Pulumi ESC</td><td class="cat">IAC</td><td class="status-soon">○</td><td class="status-soon">○</td><td class="status-soon">coming soon</td></tr>
+      <tr><td>Jenkins</td><td class="cat">CI/CD</td><td class="status-soon">○</td><td class="status-soon">○</td><td class="status-soon">coming soon</td></tr>
+      <tr><td>CircleCI</td><td class="cat">CI/CD</td><td class="status-soon">○</td><td class="status-soon">○</td><td class="status-soon">coming soon</td></tr>
+      <tr><td>Azure DevOps</td><td class="cat">CI/CD</td><td class="status-soon">○</td><td class="status-soon">○</td><td class="status-soon">coming soon</td></tr>
+      <tr><td>Kubernetes Secrets</td><td class="cat">CONTAINER</td><td class="status-soon">○</td><td class="status-soon">○</td><td class="status-soon">coming soon</td></tr>
+      <tr><td>Vercel</td><td class="cat">DEPLOY</td><td class="status-soon">○</td><td class="status-soon">○</td><td class="status-soon">coming soon</td></tr>
+      <tr><td>Fly.io</td><td class="cat">DEPLOY</td><td class="status-soon">○</td><td class="status-soon">○</td><td class="status-soon">coming soon</td></tr>
+      <tr><td>Railway</td><td class="cat">DEPLOY</td><td class="status-soon">○</td><td class="status-soon">○</td><td class="status-soon">coming soon</td></tr>
     </tbody>
   </table>
 </section>
@@ -460,7 +463,8 @@ function addLine(line) {
   if (line.type === 'cmd') {
     div.innerHTML = `<span class="p">${line.p}</span><span class="cmd-text">${line.text}</span>`;
   } else {
-    div.innerHTML = `<span class="${line.type === 'ok' ? 'ok' : line.type === 'warn' ? 'warn' : line.type === 'err' ? 'err' : 'out'}">${line.text || '&nbsp;'}</span>`;
+    const cls = line.type === 'ok' ? 'ok' : line.type === 'warn' ? 'warn' : line.type === 'err' ? 'err' : 'out';
+    div.innerHTML = `<span class="${cls}">${line.text || '&nbsp;'}</span>`;
   }
   demo.appendChild(div);
   demo.scrollTop = demo.scrollHeight;
@@ -471,7 +475,6 @@ function runDemo() {
   i = 0;
   function next() {
     if (i >= lines.length) {
-      // add blinking cursor at end
       const cur = document.createElement('div');
       cur.className = 'line show';
       cur.innerHTML = '<span class="p">$</span> <span class="cursor"></span>';
