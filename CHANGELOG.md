@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.1.5] - 2026-05-06
+## [0.1.6] - 2026-05-06
 
 ### Changed
 - Renamed `diff-cmd` command to `diff`

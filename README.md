@@ -33,12 +33,6 @@ DB_PORT      5432        5432        in sync
 API_KEY      ••••••••    (not set)   source only
 STRIPE_KEY   (not set)   ••••••••    target only
 DB_PASS      ••••••••    ••••••••    differs
-
-# push changes from source to target
-envcmp push --from gitlab:my-project --to terraform:my-workspace
-
-# dry run — see what would be pushed
-envcmp push --from gitlab:my-project --to terraform:my-workspace --dry-run
 ```
 
 ## Supported platforms
@@ -104,7 +98,7 @@ envcmp pull --from env:.env.local --to gitlab:my-project --dry-run
 ## Development
 
 ```bash
-git clone https://github.com/your-username/envcmp.git
+git clone https://github.com/saeedya/envcmp.git
 cd envcmp
 python -m venv .venv
 source .venv/bin/activate
