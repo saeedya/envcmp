@@ -23,7 +23,7 @@ They should always be in sync — but no tool does this automatically.
 
 ```bash
 # see what's different
-envcmp diff-cmd --from gitlab:my-project --to terraform:my-workspace
+envcmp diff --from gitlab:my-project --to terraform:my-workspace
 
 # output
 KEY          SOURCE      TARGET      STATUS
@@ -82,10 +82,10 @@ TERRAFORM_WORKSPACE=my-workspace
 
 ```bash
 # diff between two providers
-envcmp diff-cmd --from gitlab:my-project --to terraform:my-workspace
+envcmp diff --from gitlab:my-project --to terraform:my-workspace
 
 # diff between two .env files
-envcmp diff-cmd --from env:.env.production --to env:.env.staging
+envcmp diff --from env:.env.production --to env:.env.staging
 
 # push changes
 envcmp push --from gitlab:my-project --to terraform:my-workspace

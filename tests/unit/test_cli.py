@@ -31,7 +31,7 @@ class TestDiffCommand:
         result = runner.invoke(
             app,
             [
-                "diff-cmd",
+                "diff",
                 "--from",
                 f"env:{source_env}",
                 "--to",
@@ -46,7 +46,7 @@ class TestDiffCommand:
         result = runner.invoke(
             app,
             [
-                "diff-cmd",
+                "diff",
                 "--from",
                 f"env:{source_env}",
                 "--to",
@@ -61,7 +61,7 @@ class TestDiffCommand:
         result = runner.invoke(
             app,
             [
-                "diff-cmd",
+                "diff",
                 "--from",
                 f"env:{source_env}",
                 "--to",
@@ -76,7 +76,7 @@ class TestDiffCommand:
         result = runner.invoke(
             app,
             [
-                "diff-cmd",
+                "diff",
                 "--from",
                 f"env:{source_env}",
                 "--to",

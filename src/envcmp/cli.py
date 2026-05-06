@@ -16,7 +16,7 @@ app = typer.Typer(help="Sync CI/CD variables between platforms.")
 console = Console()
 
 
-@app.command()
+@app.command(name="diff")
 def diff_cmd(
     from_: str = typer.Option(..., "--from", help="Source provider (e.g. gitlab:my-project)"),
     to: str = typer.Option(..., "--to", help="Target provider (e.g. terraform:my-workspace)"),
