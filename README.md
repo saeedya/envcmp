@@ -43,7 +43,7 @@ DB_PASS      ••••••••    ••••••••    differs
 | GitLab CI Variables | CI/CD | ✅ | ✅ | available |
 | Terraform Cloud | IaC | ✅ | ✅ | available |
 | GitHub Actions | CI/CD | ✅ | ⚠️ | available |
-| HashiCorp Vault | Secret Store | 🔜 | 🔜 | coming soon |
+| HashiCorp Vault | Secret Store | ✅ | ✅ | available |
 | AWS Secrets Manager | Secret Store | 🔜 | 🔜 | coming soon |
 | Azure Key Vault | Secret Store | 🔜 | 🔜 | coming soon |
 | GCP Secret Manager | Secret Store | 🔜 | 🔜 | coming soon |

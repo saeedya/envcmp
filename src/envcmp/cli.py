@@ -11,6 +11,7 @@ from envcmp.providers.env_file import EnvFileProvider
 from envcmp.providers.github import GitHubProvider
 from envcmp.providers.gitlab import GitLabProvider
 from envcmp.providers.terraform import TerraformProvider
+from envcmp.providers.vault import VaultProvider
 from envcmp.utils import filter_variables
 
 app = typer.Typer(help="Sync CI/CD variables between platforms.")
@@ -182,6 +183,15 @@ def resolve_provider(source: str) -> BaseProvider:
             token=cfg.terraform.token,
             organization=cfg.terraform.organization,
             workspace=identifier,
+        )
+
+    if kind == "vault":
+        if cfg.vault is None:
+            raise ValueError("Vault is not configured. Set VAULT_ADDR, VAULT_TOKEN, VAULT_PATH.")
+        return VaultProvider(
+            addr=cfg.vault.addr,
+            token=cfg.vault.token,
+            path=identifier,
         )
 
     raise ValueError(f"Unsupported provider: {kind}")

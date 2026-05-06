@@ -164,6 +164,25 @@ class TestResolveProvider:
         provider = resolve_provider("terraform:my-workspace")
         assert isinstance(provider, TerraformProvider)
 
+    def test_resolve_vault_without_config(self, monkeypatch):
+        from envcmp.cli import resolve_provider
+
+        monkeypatch.delenv("VAULT_ADDR", raising=False)
+        monkeypatch.delenv("VAULT_TOKEN", raising=False)
+        monkeypatch.delenv("VAULT_PATH", raising=False)
+        with pytest.raises(ValueError, match="Vault is not configured"):
+            resolve_provider("vault:secret/data/my-app")
+
+    def test_resolve_vault_with_config(self, monkeypatch):
+        from envcmp.cli import resolve_provider
+        from envcmp.providers.vault import VaultProvider
+
+        monkeypatch.setenv("VAULT_ADDR", "http://localhost:8200")
+        monkeypatch.setenv("VAULT_TOKEN", "root")
+        monkeypatch.setenv("VAULT_PATH", "secret/data/my-app")
+        provider = resolve_provider("vault:secret/data/my-app")
+        assert isinstance(provider, VaultProvider)
+
 
 class TestPushCommand:
     def test_push_in_sync(self, source_env: Path, target_env: Path):

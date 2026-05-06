@@ -37,15 +37,17 @@ pre-commit run --all-files
 ```text
 src/envcmp/
 ├── models.py          ← Variable, DiffResult, ProviderKind
-├── cli.py             ← diff, push, pull commands
+├── cli.py             ← diff, push, pull, ui commands
 ├── differ.py          ← comparison logic between two providers
-├── config.py          ← read credentials from .env
+├── config.py          ← read credentials from environment
+├── utils.py           ← filter_variables and helpers
 └── providers/
-├── base.py        ← abstract class
-├── env_file.py    ← read/write .env files
-├── gitlab.py      ← GitLab CI Variables API
-├── github.py      ← GitHub Actions Secrets API
-└── terraform.py   ← Terraform Cloud Variables API
+    ├── base.py        ← abstract class
+    ├── env_file.py    ← read/write .env files
+    ├── gitlab.py      ← GitLab CI Variables API
+    ├── github.py      ← GitHub Actions Secrets API
+    ├── terraform.py   ← Terraform Cloud Variables API
+    └── vault.py       ← HashiCorp Vault KV v2
 ```
 
 ## Coding rules
@@ -84,9 +86,12 @@ src/envcmp/
 - [x] PyPI publish — pip install envcmp
 - [x] Landing page — envcmp.dev
 
-### Phase 4 — Next
+### Phase 4 ✅
 - [x] --filter flag
-- [ ] TUI — envcmp ui
-- [ ] HashiCorp Vault provider
+- [x] providers/vault.py — HashiCorp Vault KV v2
+- [x] utils.py — filter_variables
+
+### Phase 5 — In Progress
 - [ ] AWS Secrets Manager provider
 - [ ] Pulumi ESC provider
+- [ ] docker-compose.test.yml + integration tests
