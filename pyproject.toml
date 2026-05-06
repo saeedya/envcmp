@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "envcmp"
-version = "0.1.0"
+version = "0.1.1"
 description = "Sync CI/CD variables and secrets between platforms"
 readme = "README.md"
 requires-python = ">=3.12"
