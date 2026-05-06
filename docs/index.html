@@ -48,9 +48,6 @@
   }
   body { animation: flicker 8s infinite; }
 
-  .glow { text-shadow: 0 0 8px var(--green), 0 0 20px var(--green-dim); }
-  .glow-amber { text-shadow: 0 0 8px var(--amber), 0 0 20px #ff8800; }
-
   header {
     border-bottom: 1px solid var(--green-dim);
     padding: 16px 40px;
@@ -77,6 +74,7 @@
   }
   nav a:hover { color: var(--green); text-shadow: 0 0 6px var(--green); }
 
+  /* ── Hero ── */
   .hero {
     max-width: 960px;
     margin: 80px auto 0;
@@ -85,26 +83,88 @@
     grid-template-columns: 1fr 1fr;
     gap: 60px;
     align-items: start;
-}
-
-  .hero-text h1 {
-    font-family: 'VT323', monospace;
-    font-size: 64px;
-    line-height: 1;
-    color: var(--green);
-    text-shadow: 0 0 12px var(--green), 0 0 40px var(--green-dim);
-    margin-bottom: 20px;
   }
 
-  .hero-text h1 span { color: var(--amber); text-shadow: 0 0 12px var(--amber); }
+  .hero-text {
+    display: flex;
+    flex-direction: column;
+    height: 360px;
+    justify-content: space-between;
+  }
 
   .hero-text p {
-    font-size: 16px;
-    color: var(--green-dim);
-    line-height: 1.8;
-    margin-bottom: 32px;
-    letter-spacing: 0.5px;
-}
+      font-size: 16px;
+      color: var(--green-dim);
+      line-height: 1.8;
+      letter-spacing: 0.5px;
+      margin-bottom: 24px;
+  }
+
+  .install-box {
+      margin-bottom: 16px;
+  }
+
+  /* Terminal — fixed height, no layout shift */
+  .terminal {
+    background: #050f05;
+    border: 1px solid var(--green-dim);
+    position: relative;
+    align-self: start;
+    height: 360px;
+    overflow: hidden;
+  }
+
+  .terminal-bar {
+    background: #0d1a0d;
+    border-bottom: 1px solid var(--green-dark);
+    padding: 8px 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .t-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--green-dark); }
+  .t-title { color: var(--green-dark); font-size: 11px; margin-left: 8px; letter-spacing: 1px; }
+
+  .terminal-body {
+    padding: 20px;
+    font-size: 13px;
+    line-height: 2;
+    height: 320px;
+    overflow: hidden;
+  }
+
+  .line { display: flex; gap: 8px; opacity: 0; }
+  .line.show { opacity: 1; }
+  .line .p { color: var(--amber); }
+  .line .cmd-text { color: var(--green); }
+  .line .out { color: var(--green-dim); }
+  .line .ok { color: #00ff41; }
+  .line .warn { color: var(--amber); }
+  .line .err { color: #ff4444; }
+
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+  .cursor {
+    display: inline-block;
+    width: 8px; height: 14px;
+    background: var(--green);
+    animation: blink 1s infinite;
+    vertical-align: middle;
+    margin-left: 2px;
+  }
+
+  /* ── Install section — separate from hero ── */
+  .install-section {
+    max-width: 960px;
+    margin: 48px auto 0;
+    padding: 0 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .install-section > * {
+      grid-column: 1;
+  }
 
   .install-box {
     background: #0d1a0d;
@@ -113,7 +173,8 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
+    height: 52px;
   }
 
   .install-box .prompt { color: var(--amber); font-size: 14px; }
@@ -131,51 +192,20 @@
   }
   .copy-btn:hover { border-color: var(--green); color: var(--green); }
 
-  .badges { display: flex; gap: 10px; flex-wrap: wrap; }
+  .badges { display: flex; gap: 10px; flex-wrap: nowrap; }
   .badge {
     font-size: 11px;
     border: 1px solid var(--green-dark);
-    padding: 4px 10px;
+    padding: 3px 8px;
     color: var(--green-dim);
     letter-spacing: 1px;
+    white-space: nowrap;
   }
 
-  .terminal {
-    background: #050f05;
-    border: 1px solid var(--green-dim);
-    padding: 0;
-    position: relative;
-  }
-
-  .terminal-bar {
-    background: #0d1a0d;
-    border-bottom: 1px solid var(--green-dark);
-    padding: 8px 14px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .t-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--green-dark); }
-  .t-title { color: var(--green-dark); font-size: 11px; margin-left: 8px; letter-spacing: 1px; }
-
-  .terminal-body { padding: 20px; font-size: 13px; line-height: 2; height: 320px; overflow: hidden; }
-
-  .line { display: flex; gap: 8px; opacity: 0; }
-  .line.show { opacity: 1; }
-  .line .p { color: var(--amber); }
-  .line .cmd-text { color: var(--green); }
-  .line .out { color: var(--green-dim); }
-  .line .ok { color: #00ff41; }
-  .line .warn { color: var(--amber); }
-  .line .err { color: #ff4444; }
-
-  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-  .cursor { display: inline-block; width: 8px; height: 14px; background: var(--green); animation: blink 1s infinite; vertical-align: middle; margin-left: 2px; }
-
+  /* ── Features ── */
   .features {
     max-width: 960px;
-    margin: 100px auto 0;
+    margin: 80px auto 0;
     padding: 0 40px;
   }
 
@@ -209,6 +239,7 @@
   .feature h3 { font-size: 14px; color: var(--green); margin-bottom: 8px; letter-spacing: 1px; }
   .feature p { font-size: 12px; color: var(--green-dim); line-height: 1.7; }
 
+  /* ── Providers ── */
   .providers {
     max-width: 960px;
     margin: 80px auto 0;
@@ -235,6 +266,7 @@
   .status-warn { color: var(--amber); }
   .cat { font-size: 11px; color: #005020; letter-spacing: 1px; }
 
+  /* ── CTA ── */
   .cta {
     max-width: 960px;
     margin: 100px auto 0;
@@ -303,7 +335,7 @@
     .features-grid { grid-template-columns: 1fr; }
     .hero-text h1 { font-size: 48px; }
     header { padding: 16px 20px; }
-    .hero, .features, .providers, .cta { padding: 0 20px; }
+    .hero, .install-section, .features, .providers, .cta { padding: 0 20px; }
   }
 </style>
 </head>
@@ -318,13 +350,14 @@
   </nav>
 </header>
 
+<!-- Hero: just title + description + terminal -->
 <section class="hero">
   <div class="hero-text">
     <h1>sync your<br><span>variables.</span></h1>
     <p>
-      A lightweight CLI tool to sync CI/CD variables and secrets<br>
-      between GitLab CI, Terraform Cloud, GitHub Actions, and .env files.<br>
-      No server. No signup. Just install and run.
+      The missing bridge between your CI/CD platforms.<br>
+      Sync variables and secrets across your entire DevOps stack.<br>
+      diff &nbsp;·&nbsp; push &nbsp;·&nbsp; pull
     </p>
     <div class="install-box">
       <span class="prompt">$</span>
@@ -369,14 +402,14 @@
       <p>Pull variables from target back to source. Keep your local .env in sync with remote providers.</p>
     </div>
     <div class="feature">
+      <div class="feature-icon">[ filter ]</div>
+      <h3>FILTER</h3>
+      <p>Sync only what you need. Use --filter "DB_*" to target specific variables by pattern.</p>
+    </div>
+    <div class="feature">
       <div class="feature-icon">[ secure ]</div>
       <h3>SECURE</h3>
       <p>Secret values are never printed. All output uses masked values. Scanned with bandit and pip-audit.</p>
-    </div>
-    <div class="feature">
-      <div class="feature-icon">[ simple ]</div>
-      <h3>ZERO CONFIG</h3>
-      <p>No server. No dashboard. No account. Just set env vars and run. Works in CI pipelines too.</p>
     </div>
     <div class="feature">
       <div class="feature-icon">[ open ]</div>
